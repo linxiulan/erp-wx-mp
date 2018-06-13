@@ -1,0 +1,70 @@
+<!--index.wxml-->
+<view class='main'>
+  <view class='mainTop'>
+    <image src="../images/homeBanners.png" mode="widthFix"></image>
+    <view class='banner-search'>
+      <navigator url='../order/search' class='searchBtn'>
+        <image src="../images/search-icon.png" mode="widthFix"></image>请输入订单号/手机号查询/收货人名字</navigator>
+      <view bindtap='scanningBtn' class='scanningBtn'>
+        <image src="../images/scanning-icon.png" mode="widthFix"></image>
+      </view>
+    </view>
+  </view>
+  <view class='mainNav clearfix'>
+    <navigator url='../order/editOrder'  >
+      <image src="../images/order-icon.png" mode="widthFix"></image>
+      <label>下单</label>
+    </navigator>
+    <navigator url="../loading/carList" >
+      <image src="../images/shipping-icon.png" mode="widthFix"></image>装车
+    </navigator>
+    <navigator url="../discharge/carList">
+      <image src="../images/discharge-icon.png" mode="widthFix"></image>卸货
+    </navigator>
+  </view>
+  <view class='mainList'>
+    <navigator url="../index/list" class='list clearfix'>
+      <view class='listLeft'>
+        <image src="../images/orders-icon.png" ></image>
+        今日订单
+      </view>
+      <view class='listRight'>
+         {{total>0?total:''}}
+        <image src="../images/indicator-right-icon.png" ></image>
+      </view>
+    </navigator>
+    <navigator url="../index/list?type=1" class='list clearfix'>
+      <view class='listLeft'>
+        <image src="../images/receipt-icon.png" ></image>
+        已收件未装车
+      </view>
+      <view class='listRight'>
+        {{collectedCount>0?collectedCount:''}}
+        <image src="../images/indicator-right-icon.png" ></image>
+      </view>
+    </navigator>
+    <navigator url="../index/list?type=2" class='list clearfix'>
+      <view class='listLeft'>
+        <image src="../images/notice-icon.png" mode="widthFix"></image>
+        已卸货待通知
+      </view>
+      <view class='listRight'>
+        {{unNotifyCount>0?unNotifyCount:''}}
+        <image src="../images/indicator-right-icon.png" mode="widthFix"></image>
+      </view>
+    </navigator>
+    <navigator url="../index/list?type=3" class='list clearfix'>
+      <view class='listLeft'>
+        <image src="../images/trailer-icon.png" mode="widthFix"></image>
+        已卸货未提货
+      </view>
+      <view class='listRight'>
+        {{deliveryCount>0?deliveryCount:''}}
+        <image src="../images/indicator-right-icon.png" mode="widthFix"></image>
+      </view>
+    </navigator>
+  </view>
+</view>
+<navigator url="../user/index" class='userBtn'>
+<image src="../images/user-icon.png" mode="widthFix"></image>
+</navigator>

@@ -1,0 +1,54 @@
+<!--pages/blueTooth/list.wxml-->
+<view class='blueTooth-failure' wx-if="{{status=='failure'}}">
+  <image class='unopened-Icon' src="../images/blueTooth-icon.png"></image>
+  <view class='title'>
+    蓝牙未开启
+  </view>
+  <view class='prompt'>
+    请在手机设置中，手动开启蓝牙功能。
+  </view>
+  <!--<button type='primary' class='openBtn'>开启蓝牙</button>-->
+</view>
+
+<view class='blueTooth-complete' wx-if="{{status=='complete'}}">
+  <image class='complete-Icon' src="../images/print-icon-gray-130.png"></image>
+  <view class='title'>
+    已为您打印订单
+  </view>
+</view>
+
+<view class='blueTooth-normal' wx-if="{{status=='normal'}}">
+  <view class='listMain' wx-if="{{connectedDeviceList.length>0}}">
+    <view class='title'>您已连接的设备</view>
+    <view class='list' wx:for="{{connectedDeviceList}}" wx:ietm="item" data-deviceId="{{item.deviceId}}" data-deviceName="{{item.name}}" bindtap='connectionPrint'>
+      <image class='left-Icon' src="../images/print-icon-black-40.png"></image>
+      {{item.name?item.name:item.deviceId}}
+    </view>
+  </view>
+  <view class='listMain' wx-if="{{lastUsedDeviceList.length>0}}">
+    <view class='title'>您使用过的设备</view>
+    <view class='list' wx:for="{{lastUsedDeviceList}}" wx:ietm="item" wx:index="index"
+     data-deviceId="{{item.deviceId}}" 
+     data-serviceId="{{item.serviceId}}" 
+     data-characteristicId="{{item.characteristicId}}"
+     data-deviceName="{{item.name}}"
+     data-listIndex="{{index}}"
+     bindtap='connectionPrint'>
+      <image class='left-Icon' src="../images/print-icon-black-40.png"></image>
+      {{item.name?item.name:item.deviceId}}
+    </view>
+  </view>
+  <view class='listMain' wx-if="{{newDeviceList.length>0}}">
+    <view class='title'>帮你搜索到的新设备</view>
+    <view class='list' wx:for="{{newDeviceList}}" wx:ietm="item" data-deviceId="{{item.deviceId}}" data-deviceName="{{item.name}}" bindtap='connectionDevice'>
+      <image class='left-Icon' src="../images/print-icon-black-40.png"></image>
+      {{item.name?item.name:item.deviceId}}
+    </view>
+  </view>
+  <view class="{{loading?'blueTooth-loading':'blueTooth-load'}}">
+    <view class='blueTooth-load-text' bindtap='manualSearch'>{{loading?'正在搜寻附近的设备':'重新搜索'}}<image src="../images/load-icon-30.png"></image></view>
+  </view>
+  <!--<view class='footer'>
+    <button>打印</button>
+  </view>-->
+</view>

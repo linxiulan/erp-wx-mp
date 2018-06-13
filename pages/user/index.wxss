@@ -1,0 +1,26 @@
+/* pages/user/index.wxss */
+.profilePicture{
+  display: block; width: 140rpx; height: 140rpx; border-radius: 140rpx;
+  margin: 100rpx auto 20rpx auto;
+}
+.companyName{
+  font-size: 32rpx; color: #333; margin-bottom: 80rpx; text-align: center
+}
+
+.other{
+ background: #FBFBFB; margin: 0 30rpx; color: #333;
+ text-align: center; padding: 30rpx 30rpx 10rpx 30rpx;
+}
+.other image{
+  display: block;width: 80rpx; height: 80rpx; border-radius: 80rpx;
+  margin: 0 auto;
+}
+.userName{
+  font-size: 32rpx; color: #333; margin: 15rpx 0 20rpx 0; text-align: center
+}
+.stationName{
+  line-height: 80rpx; font-size: 28rpx; border-top: 1px solid #F0F0F0;
+} 
+.openBtn{
+  margin:50rpx 30rpx 0 30rpx; font-size: 32rpx;
+}

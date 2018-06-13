@@ -1,0 +1,17 @@
+/* pages/canvas/signature.wxss */
+.canvas-main{
+  padding: 30rpx;
+}
+.canvas{ width: 100%; height: 400rpx; border:1px solid #ddd; border-radius: 8rpx;}
+.canvas-btn{
+  margin-top: 60rpx; height: 100rpx; text-align: center;
+}
+.canvas-btn button{
+  display: inline-block;padding: 0 80rpx; margin:0 30rpx; font-size: 30rpx;
+}
+.canvas-btn .clearBtn{
+  color: #7bde96; background: #fff; border:1rpx solid #7bde96;
+}
+.canvas-btn .savaBtn{
+color: #fff; background: #7bde96; border:1rpx solid #7bde96;
+}

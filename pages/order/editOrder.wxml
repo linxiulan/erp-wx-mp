@@ -1,0 +1,130 @@
+<!--pages/order/editOrder.wxml-->
+<!--联系人资料（寄件人与收件人）Start-->
+<view class="contactInfo">
+  <view class='contactInfo-list' bindtap='editReceiverInfo'>
+    <view class='icon'>收</view>
+    <image src="../images/indicator-right-icon.png" mode="widthFix"></image>
+    <view class='contactInfo-text' wx:if="{{receiverInfo.address||receiverInfo.mobile}}">
+      <view class='address'>{{receiverInfo.stationName}}{{receiverInfo.address?'-'+receiverInfo.address:''}}</view>
+      <view>{{receiverInfo.name}} {{receiverInfo.mobile}}</view>
+    </view>
+    <view class='contactInfo-hint' wx:else>收货人信息</view>
+  </view>
+  <view class='contactInfo-list' bindtap='editSenderInfo'>
+    <view class='icon c-red'>发</view>
+    <image src="../images/indicator-right-icon.png" mode="widthFix"></image>
+    <view class='contactInfo-text' wx:if="{{senderInfo.name||senderInfo.mobile}}">
+      <view class='address'>{{stationName}}</view>
+      <view>{{senderInfo.name}} {{senderInfo.mobile}}</view>
+    </view>
+    <view class='placeholder contactInfo-hint' wx:else>发货人信息</view>
+  </view>
+</view>
+<!--联系人资料（寄件人与收件人）End-->
+
+<!--货物信息 Start-->
+<view class="cargoesInfo">
+  <view class='cargoesInfo-list' wx:for="{{cargoes}}" wx:key="index" wx:for-item="item">
+    <text>{{index==0?'货物':'加货'}}</text>
+    <image data-index='{{index}}'  src="../images/{{index==0?'add':'del'}}-icon.png" mode="widthFix" bindtap="operateCargoes"></image>
+    <view bindtap='openEditCargoes' data-index="{{index}}" class='cargoesInfo-text' wx:if="{{item.count>0}}">
+      {{item.name}} {{item.count}}{{item.unit}}
+    </view>
+    <view bindtap='openEditCargoes' data-index="{{index}}" class='placeholder' wx:else>填写货物及数量</view>
+  </view>
+</view>
+<!--货物信息 End-->
+
+<!--支付方式 Start-->
+<view class="paymentMethod">
+  支付方式
+  <view class='paymentMethod-lable' data-type='BY_RECEIVER' bindtap="switchPayType">
+    <image data-type='BY_RECEIVER' src="../images/{{payType=='BY_RECEIVER'?'selected':'noSelected'}}-icon.png" ></image>
+    提付
+  </view>
+  <view class='paymentMethod-lable' data-type='BY_SENDER' bindtap="switchPayType">
+    <image data-type='BY_SENDER' src="../images/{{payType=='BY_SENDER'?'selected':'noSelected'}}-icon.png" ></image>
+    现付
+  </view>
+</view>
+<!--支付方式 End-->
+
+<!--费用信息 Start-->
+<view class="costInfo" wx:if="{{payType}}" >
+  <view class="costInfo-receiver" wx:if="{{payType=='BY_SENDER'}}">
+    <view class='costInfo-title'>应收发货人费用
+      <text>{{monthly?'月结':'现结'}}</text>
+    </view>
+    <view class='costInfo-list' bindtap='editCostInfo' >
+      <text>运费</text>{{freightCharge}}元
+    </view>
+    <view class='costInfo-list' bindtap='editCostInfo'>
+      <text>其他费用</text>
+      <view class='costInfo-other'>
+        {{otherPricesText?otherPricesText:'请选择'}}
+        <image src="../images/indicator-right-icon.png" mode="widthFix"></image>
+      </view>
+    </view>
+    <view class='costInfo-list'>
+      <view class='costInfo-total'>合计：{{statisticalFees}}元</view>
+    </view>
+  </view>
+  <view class="costInfo-sender">
+    <view class='costInfo-title'>应收收货人费用</view>
+    <view class='costInfo-list' wx:if="{{payType=='BY_RECEIVER'}}">
+      <text>运费</text>
+      <input type='text' bindinput='bindKeyFreight' value='{{RECEIVERFreight}}' ></input>
+      <label>元</label>
+    </view>
+    <view class='costInfo-list'>
+      <text>代收货款</text>
+      <input type='text' bindinput='bindKeyReceivable' value='{{receivableInfo.receivable}}' ></input>
+      <label>元</label>
+    </view>
+  </view>
+</view>
+<!--费用信息 End-->
+
+<!--备注 Start-->
+<view class="remark">
+  <text>备注</text>
+  <input value="{{remark}}" bindinput='bindKeyRemark' placeholder-class="c-999" type='text' placeholder="请填写需备注内容"></input>
+</view>
+<!--备注 End-->
+<view style='height:210rpx;'></view>
+<!--底部 Start-->
+<view class="bottom">
+  <button bindtap="verificationInfo">保存</button>
+</view>
+<!--底部 End-->
+<!--编辑货物 Start-->
+<view class='bullet-bg' bindtap='closeBullet'  wx:if="{{isShowEditCargoes}}" ></view>
+<view class="editCargoes {{isShowEditCargoes?'editCargoesShow':''}}">
+  <view class='editCargoes-title'>货物数量
+    <image src="../images/clear-icon-20.png" bindtap='closeBullet' mode="widthFix"></image>
+  </view>
+  <view class='editCargoes-statistical'>
+    <view class='editCargoes-statisticalLeft'>
+      <image bindtap='delEditCargoesCount' class='minusSign' src="../images/minusSign-icon{{editCargoes.count<=0?'-gray':''}}.png" mode="widthFix"></image>
+      <image bindtap='addEditCargoesCount' class='plus' src="../images/plus-icon.png" mode="widthFix"></image>
+      <input type='number' bindinput="bindKeyCount" value='{{editCargoes.count}}'></input>
+    </view>
+    <view class='editCargoes-statisticalRight' bindtap='operateStatisticalPopUp'>
+      {{editCargoes.unit}}
+      <image src="../images/indicator-bottom-icon.png" mode="widthFix"></image>
+    </view>
+    <view class="editCargoes-statisticalPopUp {{isShowStatisticalPopUp?'isShow':''}}">
+      <label bindtap='operateStatisticalPopUp' data-type="{{item}}" wx:for='{{editCargoesType}}' class="{{editCargoes.unit==item?'current':''}}" wx:item="item" wx:key="key">{{item}}</label>
+    </view>
+  </view>
+  <view class='editCargoes-type'>
+  <view class='editCargoes-title'>货物类型<text>（选填）</text></view>
+  <label wx:for='{{editCargoesName}}' class="{{editCargoes.name==item?'current':''}}" data-name='{{item}}' bindtap='selectCargoesName' wx:item="item" wx:key="key">{{item}}</label>
+  </view>
+</view>
+<!--编辑货物 End-->
+<!--弹出框 Start-->
+<modal hidden="{{modal.isHidden}}"  confirm-text="确认已收取" cancel-text="未收取" bindcancel="modalCancel" bindconfirm="modalConfirm" no-cancel="{{modalCancel}}">
+    {{modal.text}}
+</modal>
+<!--弹出框 End-->

@@ -1,0 +1,64 @@
+/* pages/order/list.wxss */
+.orderSearch{
+  position: fixed; top: 0; left: 0; width: 100%; height: 108rpx; border-bottom: 1rpx solid #AAAAAA;line-height: 108rpx; z-index: 2;
+}
+.orderSearch .current{
+  color: #49c999;
+}
+.orderSearchList{
+  width: 50%; float: left;  font-size: 28rpx; color: #555;text-align: center 
+}
+.orderSearchList label{
+  position: relative; padding: 0 40rpx;
+}
+.orderSearchList image{
+  display: block;width: 20rpx; height: 12rpx; position: absolute; right: 0;top: 50%; margin-top: -6rpx;
+}
+#typePicker{
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(53, 53, 53, 0.3)
+}
+.typePickerMain{
+  padding-top: 109rpx; background: #fff; padding-left: 30rpx;
+}
+.typePickerMain .current{
+  color: #49c999;
+}
+.typePickerList{
+  height: 100rpx; line-height: 100rpx; font-size: 28rpx; color: #999;border-bottom: 1rpx solid #ddd; position: relative;
+}
+.typePickerList:last-child{
+  border-bottom:0;
+}
+.typePickerList image{
+  position: absolute; top: 50%; right: 60rpx; display: block; width: 28rpx; height: 20rpx; margin-top: -10rpx;
+}
+.orderList{
+  padding-top:109rpx;
+}
+.orderList navigator{
+  padding-left: 30rpx; padding-bottom: 30rpx; border-bottom: 30rpx solid #eee;
+}
+.orderList navigator:last-child{
+  border-bottom: 0;
+}
+.orderTitle{
+  line-height: 90rpx; font-size: 28rpx; color: #555;padding-right: 30rpx; border-bottom: 1rpx solid #ddd;
+}
+.orderTitle label{
+  float: right;
+}
+.orderNamme{
+  padding: 40rpx 30rpx 40rpx 0; line-height: 40rpx; font-size: 30rpx; color: #333;
+}
+.orderNamme image{
+  display: inline-block; width: 30rpx; height: 24rpx;
+}
+.orderList text{
+   display: block; font-size: 28rpx; color: #333; margin-bottom: 20rpx; padding-right: 30rpx;
+}
+.orderList .ordertime{
+  color: #999; margin-bottom: 0;
+}
+.noDate{
+  font-size: 28rpx; text-align: center; padding-top: 300rpx; color: #999;
+}

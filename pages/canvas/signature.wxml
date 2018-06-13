@@ -1,0 +1,9 @@
+<!--pages/canvas/canvas.wxml-->
+<view class='canvas-main'>
+<canvas class="canvas" id="canvas" canvas-id="canvas" disable-scroll="true" bindtouchstart="canvasStart" bindtouchmove="canvasMove" bindtouchend="canvasEnd" touchcancel="canvasEnd" binderror="canvasIdErrorCallback"></canvas>
+<view  class='canvas-btn'>
+<button class='clearBtn' type="default" bindtap="cleardraw">清除</button>
+<button class='savaBtn' type="default" bindtap="getimg">保存</button>
+</view>
+
+</view>

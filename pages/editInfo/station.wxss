@@ -1,0 +1,16 @@
+/* pages/editInfo/station.wxss */
+.selectStation-title{
+  height: 50rpx; line-height: 50rpx; font-size: 26rpx; color: #555; padding: 30rpx 30rpx 10rpx 30rpx; background: #dcdcdc;
+}
+.selectStation-list{
+  padding: 30rpx 0 0 30rpx;
+}
+.selectStation-list::after{
+  content:""; display:block; height:0; visibility:hidden; clear:both;
+}
+.selectStation-list label{
+  display: block;padding: 0 40rpx; height: 88rpx; line-height: 88rpx; border:1rpx solid #aaa; float: left; margin-bottom: 30rpx; margin-right: 30rpx; color: #555; font-size: 28rpx;
+}
+.selectStation-list .current{
+  color: #fff; background: #4FC89A; border-color: #4FC89A;
+}

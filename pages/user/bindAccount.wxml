@@ -1,0 +1,39 @@
+<!--pages/qrcode/handler.wxml-->
+<!--确认公司模块 start -->
+<view wx:if="{{currentModules=='company'}}">
+  <image class='bindIcon' src='../images/binding-icon.png'></image>
+  <!--<text>您正在绑定成为以下公司员工</text>-->
+  <text>您正在绑定成为公司员工</text>
+  <text class='company' style='display:none;'>广东穗时达物流有限公司</text>
+  <button class='nextBtn' data-name='information' bindtap="switchingModule">下一步</button>
+</view>
+<!--确认公司模块 end -->
+<!--完善资料模块 start -->
+<view class="informationModules" wx:if="{{currentModules=='information'}}">
+  <view class="information-list">
+    <label>姓名</label>
+    <input type="text" bindinput="bindKeyUserName" placeholder-class="placeholder-c999" placeholder="请输入您的名字"></input>
+  </view>
+  <view class="information-list">
+    <label>手机</label>
+    <input type='text' bindinput="bindKeyMobile" placeholder-class="placeholder-c999" placeholder="请输入您的手机号码" ></input>
+  </view>
+  <button class='bindBtn'bindtap="saveBtn" >保存并绑定</button>
+</view>
+<!--完善资料模块 end -->
+<!--绑定成功模块 start -->
+<view class='bindSuccessModules' wx:if="{{currentModules=='bindSuccess'}}">
+<image class='bindSuccessIcon' src='../images/bindSuccess-icon.png'></image>
+  <text class='bindSuccessText'>绑定成功</text>
+  <text class='mt-40'>可使用微信小程序“火山智慧物流”工作</text>
+  <button class='bindSuccessBtn' data-name='information' bindtap="returnHome">现在使用</button>
+  <view class='bindSuccessPrompt'>如需解绑，请联系公司负责人</view>
+</view>
+<!--绑定成功模块 end -->
+<!--二维码失效模块 start -->
+<view class='bindFailureModules' wx:if="{{currentModules=='bindFailure'}}">
+<image class='bindSuccessIcon' src='../images/bindwarning-icon.png'></image>
+  <text class='bindSuccessText'>{{failureTitle}}</text>
+  <text class='mt-40'>{{failureText}}</text>
+</view>
+<!--二维码失效模块 end -->

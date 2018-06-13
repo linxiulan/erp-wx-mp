@@ -1,0 +1,158 @@
+/* pages/order/editOrder.wxss */
+page{
+  display: block;  
+  min-height: 100%;
+  background-color: #eee;
+}
+.placeholder{
+font-size: 26rpx; line-height: 50rpx; color: #999; font-weight: normal;
+}
+.contactInfo-list{
+  padding: 40rpx 110rpx; background: #fff; border-bottom: 1rpx solid #ddd;position: relative;
+}
+.contactInfo-list:last-child{
+   border-bottom: 0;
+}
+.contactInfo-list .icon{
+  display: block; width: 50rpx; height: 50rpx; position: absolute;left: 30rpx;top: 50%;margin-top: -20rpx; background: #4FC89A; color: #fff; font-size: 26rpx; text-align: center; border-radius: 50rpx; line-height: 50rpx;
+}
+.contactInfo-list  .c-red{ background: #E68686;}
+.contactInfo-hint{ line-height: 100rpx;color: #999; font-size: 26rpx;}
+.contactInfo-text{
+  font-size: 26rpx; color: #555; line-height: 50rpx;
+}
+.contactInfo-text .address{
+  font-size: 28rpx; color: #333;
+}
+.contactInfo-list image{
+   position: absolute; top:50%; margin-top: -16rpx; right: 30rpx; display: block; width: 18rpx; height: 32rpx;
+}
+.cargoesInfo{
+  margin-top: 30rpx; background: #fff;
+}
+.cargoesInfo-list{
+  padding: 30rpx 110rpx;border-bottom: 1rpx solid #ddd;position: relative; height: 50rpx;
+}
+.cargoesInfo-list:last-child{
+  border-bottom: 0;
+}
+.cargoesInfo-list text{
+  position: absolute; top: 30rpx; left: 30rpx; font-size: 26rpx; color: #333;line-height: 50rpx;
+}
+.cargoesInfo-list image{
+  display: block; width: 30rpx; height: 30rpx; position: absolute; top: 50%; right: 30rpx; margin-top: -15rpx;
+}
+.cargoesInfo-text{
+  font-size: 26rpx; color: #555; line-height: 50rpx;
+}
+.paymentMethod{
+  margin-top: 30rpx; background: #fff; font-size: 26rpx; color: #555; padding: 30rpx 30rpx; line-height: 50rpx;
+}
+.paymentMethod-lable{
+  position: relative; padding-left: 60rpx; height: 50rpx; line-height: 50rpx; float: right;margin-left: 60rpx;
+}
+.paymentMethod-lable image{
+  display: block; width: 30rpx; height: 30rpx; position: absolute; top: 0rpx; left: 0;padding: 10rpx 0;
+}
+.costInfo-title{
+  margin-top: 30rpx; height: 50rpx; line-height: 50rpx; font-size: 26rpx; color: #555; padding: 0 30rpx;
+}
+.costInfo-title text{ border:1rpx solid #E29F83; color: #E29F83; font-size: 22rpx; line-height: 48rpx; padding: 0 10rpx; margin-left: 20rpx;}
+.costInfo-list{
+  padding: 30rpx 30rpx 30rpx 160rpx;border-bottom: 1rpx solid #ddd;position: relative; height: 50rpx; line-height: 50rpx; background: #fff; font-size: 26rpx; color: #999; text-align: right;
+}
+.costInfo-list:last-child{
+  border-bottom: 0;
+}
+.costInfo-total{
+  font-size: 26rpx; color: #333;
+} 
+.costInfo-list  text{
+  position: absolute; top: 30rpx; left: 30rpx; font-size: 26rpx; color: #333;line-height: 50rpx;text-align: left;
+}
+.costInfo-other{
+   position: relative;overflow: hidden;text-overflow:ellipsis;white-space: nowrap; padding-right: 30rpx;
+}
+.costInfo-other image{
+  position: absolute; top:50%; margin-top: -10rpx; right: 0rpx; display: block; width: 12rpx; height: 20rpx;
+}
+.costInfo-list input{
+  display: block; height: 50rpx; line-height: 40rpx; padding:0  40rpx 0 0; position: relative;min-height: 50rpx;
+}
+.costInfo-list label{
+  position: absolute; top: 30rpx; right: 30rpx; line-height: 50rpx;
+}
+.remark{
+  padding:30rpx 30rpx 30rpx 110rpx; background: #fff; margin-top: 30rpx; position: relative;
+}
+.remark text{
+  position: absolute; top: 30rpx; left: 30rpx; font-size: 26rpx; color: #333;line-height: 50rpx;
+}
+.remark input{
+  display: block; height: 50rpx; line-height: 40rpx; padding:0  40rpx 0 0; position: relative;min-height: 50rpx; font-size: 26rpx; color: #333;
+}
+.remark .c-999{ color: #999;}
+.bottom{
+  position: fixed; width: 100%;  left: 0; bottom:0;background: #FAFAFA;box-sizing: border-box; padding: 40rpx 120rpx; z-index: 2;
+}
+.bottom button{
+  height: 100rpx; width: 100%; line-height: 100rpx; font-size: 30rpx; color: #fff; display: block; background: #6DD27F;
+}
+.editCargoes{
+  position: fixed; bottom: 0; left: 0; padding: 30rpx; width: 100%; background: #fff; box-sizing: border-box; z-index: 101; padding-bottom: 100rpx; display: none;
+}
+.editCargoesShow{display: block;}
+.editCargoes-title{
+  height: 40rpx; line-height: 40rpx; font-size: 28rpx; color: #333;
+}
+.editCargoes-title image{
+  display: block; width: 20rpx; height: 20rpx; float: right; margin-top: 10rpx;
+}
+.editCargoes-title text{
+  color: #999;
+}
+.editCargoes-statistical{
+  padding-right: 240rpx; position: relative;margin-top: 20rpx;
+}
+.editCargoes-statisticalLeft{
+  height: 86rpx; line-height: 86rpx; border:1rpx solid #AAAAAA; position: relative; 
+}
+.editCargoes-statisticalLeft input{
+  display: block; margin:0 86rpx;border-left:1rpx solid #AAAAAA;border-right:1rpx solid #AAAAAA; text-align: center; height: 86rpx; box-sizing: border-box; font-size: 28rpx; color: #333;
+}
+.editCargoes-statisticalLeft image{
+  display: block; width: 46rpx; position: absolute; top: 50%;
+}
+.editCargoes-statisticalLeft .minusSign{
+  left: 20rpx;margin-top: -23rpx; padding: 20rpx 0;
+}
+.editCargoes-statisticalLeft .plus{
+  right:20rpx;margin-top: -24rpx;
+}
+.editCargoes-statisticalRight{
+  height: 86rpx; line-height: 86rpx; border:1rpx solid #AAAAAA;position: absolute; top: 0; right: 0; width: 140rpx; padding: 0 30rpx;  font-size: 28rpx; color: #333;
+}
+.editCargoes-statisticalPopUp{
+  position: absolute; top: 88rpx; right: 0;border:1rpx solid #AAAAAA; border-top: 0;width: 140rpx; padding: 0 30rpx; display: none;
+}
+.isShow{
+  display: block;
+}
+.editCargoes-statisticalPopUp label{
+  height: 86rpx; line-height: 86rpx; display: block;font-size: 28rpx; color: #333;
+}
+.editCargoes-statisticalPopUp .current{
+  color: #4FC799;
+}
+.editCargoes-statisticalRight image{
+  float: right; display: block; width: 20rpx; margin-top: 37rpx;
+}
+.editCargoes-type{
+  margin-top: 40rpx;
+}
+.editCargoes-type label{
+  margin-top: 30rpx; margin-right: 30rpx; height: 86rpx; line-height: 86rpx; padding: 0 60rpx; border:1rpx solid #AAAAAA; font-size: 28rpx; color: #555; display: block; float: left;
+}
+.editCargoes-type .current{
+  color: #fff;border:1rpx solid #4FC799; background: #4FC799;
+}

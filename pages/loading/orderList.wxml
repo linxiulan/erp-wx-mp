@@ -1,0 +1,55 @@
+<view class='top'>
+  <view class='box'>
+    <view class='line'></view>
+    <view class='line-short'></view>
+    <view class='car'>
+      <view class='point'></view>
+      <view>选择车辆</view>
+    </view>
+    <view class='order'>
+      <view class='point'></view>
+      <view>添加订单</view>
+    </view>
+  </view>
+</view>
+<view class='select-car'>
+  <view class='title'>添加订单</view>
+  <view class='operating clearfix'>
+    <view class='information'>车辆:{{plateNumber}}</view>
+    <view class='left'>
+      <button bindtap='selectOrder'>选择订单</button>
+    </view>
+    <button bindtap='scanningBtn' class='right'>扫码添加</button>
+  </view>
+
+  <view class='list'>
+    <view class="touch-item {{item.isTouchMove ? 'touch-move-active' : ''}}" data-index="{{index}}" bindtouchstart="touchstart" bindtouchmove="touchmove" wx:for="{{orderList}}" wx:itme="item" wx:key="">
+      <view class='OrdersNum'>单号：{{item.tradeId}}</view>
+      <view class='name clearfix'>
+        <view class='lastName'>{{item.receiver}}</view>
+        <image class='img' mode='widthFix' src='../images/arrowRight-icon.png'></image>
+        <view class='nextName'>{{item.sender}}</view>
+      </view>
+      <view class='address'>
+        {{item.from.name}} -- {{item.to.name}}
+      </view>
+      <view class='information clearfix'>
+        <view wx:for='{{item.items}}'>
+          {{item.name}}-{{item.count}}{{item.unit}} ; 
+        </view>
+      </view>
+      <view class='time' >
+        {{item.gmtCreate}}
+      </view>
+
+      <view class="del" catchtap="del" data-index="{{index}}">
+        <image class='del_img' mode='widthFix' src='../images/del-icon-red.png'></image>
+      </view>
+    </view>
+  </view>
+
+</view>
+
+<view class='bottomBtn'>
+    <button bindtap='modifyStatus'>确认装车</button>
+</view>

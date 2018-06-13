@@ -1,0 +1,7 @@
+<!--二维码失效模块 start -->
+<view class='bindFailureModules' wx:if="{{currentModules=='bindFailure'}}">
+<image class='bindSuccessIcon' src='../images/bindwarning-icon.png'></image>
+  <text class='bindSuccessText'>{{failureTitle}}</text>
+  <text class='mt-40'>{{failureText}}</text>
+</view>
+<!--二维码失效模块 end -->

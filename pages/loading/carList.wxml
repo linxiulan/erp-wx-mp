@@ -1,0 +1,40 @@
+<!--pages/index/list.wxml-->
+
+
+<view class='top'>
+  <view class='box'>
+    <view class='line'></view>
+    <view class='line-short'></view>
+    <view class='car'>
+      <view class='point'></view>
+      <view>选择车辆</view>
+    </view>
+    <view class='order'>
+      <view class='point'></view>
+      <view>添加订单</view>
+    </view>
+  </view>
+</view>
+<view class='select-car'>
+  <view class='title'>选择车辆</view>
+  <view class='select'>
+    <button bindtap='scanningBtn'>扫码添加</button>
+  </view> 
+  <view class='list'>
+    <view class='car-item'  wx:for='{{carList}}' wx:item="item" data-id="{{item.carId}}" data-name="{{item.plateNumber}}" bindtap='selectedCar'>
+    <image class='car-icon' src='../images/car-icon.png' mode='widthFix'></image>
+      {{item.plateNumber}}
+    <image class='select' src='../images/tick-icon.png' mode='widthFix' wx:if="{{item.carId==curCar}}"></image>
+    </view>
+  </view> 
+</view>
+<view class='bottom'>
+  <view class='box'>
+    <view class='left'>
+      已选：{{curCarName}}
+    </view>
+    <view class='right' wx:if="{{ curCarName  != ''}}">
+      <navigator url='../loading/orderList?carId={{curCar}}&plateNumber={{curCarName}}'>下一步</navigator>
+    </view>
+  </view>
+</view>

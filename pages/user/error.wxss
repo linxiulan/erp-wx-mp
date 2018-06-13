@@ -1,0 +1,13 @@
+/* pages/user/error.wxss */
+image{
+  display: block;margin: 230rpx auto 80rpx auto;
+}
+.logo{width: 144rpx;}
+.errorSite{width: 180rpx;}
+text{
+  font-size: 28rpx; color: #999999; text-align: center; margin-bottom: 30rpx;display: block;
+}
+.title{
+  color: #333;
+}
+.openBtn{ width: 80%; margin:0px auto;}

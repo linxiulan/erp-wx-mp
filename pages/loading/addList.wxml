@@ -1,0 +1,50 @@
+<!--pages/index/selectOrder.wxml-->
+<!--<view class='selectBox'>
+  <view class='item clearfix'>
+    <input placeholder='输入订单号'></input>
+     <image mode='widthFix' class='close' src='../images/search-icon.png'></image>
+    
+  </view>
+</view>-->
+<view class='list' wx-if="{{listData.length>0}}">
+  <view class="touch-item" wx:for="{{listData}}" wx:for-index="index" catchtap='select' data-index="{{index}}" wx-if="{{!item.isHidden}}">
+      <view class="select_img">
+        <image class="select_img " mode='widthFix' src="../images/point{{item.isSelect ? '-active' : ''}}.png"></image>
+      </view>
+      <view class='left'>
+        <view class='OrdersNum clearfix'>
+          单号：{{item.tradeId}}
+          <view class='state'>
+            {{item.status=='COLLECTED'?'已支付':''}}
+          </view>
+        </view>
+        <view class='name clearfix'>
+          <view class='lastName'>{{item.receiver}}</view>
+          <image class='img' mode='widthFix' src='../images/arrowRight-icon.png'></image>
+          <view class='nextName'>{{item.sender}}</view>
+        </view>
+        <view class='address'>
+          {{item.from.name}} -- {{item.to.name}}
+        </view>
+        <view class='information clearfix'>
+          <view wx:for='{{item.items}}' wx:item="item">
+            {{item.name}}-{{item.count}}{{item.unit}} ;
+          </view>
+        </view>
+        <view class='time'>
+          {{item.gmtCreate}}
+        </view>
+
+      </view>
+  </view>
+  <!--上拉加载更多 Start-->
+  <view class="downLoad" wx:if="{{loadingText}}">
+    <view class="downLoad-bg"></view>
+    <text>{{loadingText}}</text>
+  </view>
+
+  <!--上拉加载更多 End-->
+</view>
+<view class='bottomBtn'>
+  <button bindtap='addOrder'>添加</button>
+</view>

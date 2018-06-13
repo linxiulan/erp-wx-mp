@@ -1,0 +1,37 @@
+<!--pages/order/list.wxml-->
+<view>
+  <view class='orderSearch'>
+    <view class="orderSearchList {{typePicker.isShow?'current':''}}" bindtap="showTypePickerr">
+      <label>全部类型
+        <image src="../images/{{typePicker.isShow?'indicator-bottom-hover-icon.png':'indicator-bottom-icon.png'}}" mode="widthFix"></image>
+      </label>
+    </view>
+    <view class="orderSearchList {{datePickerIsShow?'current':''}}" bindtap="showDatePicker">
+      <label>{{date?date:'选择日期'}}
+        <image src="../images/{{datePickerIsShow?'indicator-bottom-hover-icon.png':'indicator-bottom-icon.png'}}" mode="widthFix"></image>
+      </label>
+      <date-picker id="date-picker" value="{{datePickerValue}}" isShow="{{datePickerIsShow}}" bindsureclick="datePickerOnSureClick" bindcancelclick="datePickerOnCancelClick" />
+    </view>
+  </view>
+  <view id='typePicker' wx:if="{{typePicker.isShow}}">
+    <view class='typePickerMain'>
+      <view wx:for="{{typePicker.data}}" wx:key="key" class="typePickerList {{item.value==typePicker.current?'current':''}}">
+        {{item.name}}
+        <image wx:if="{{item.value==typePicker.current}}" src="../images/tick-icon.png" mode="widthFix"></image>
+      </view>
+    </view>
+  </view>
+  <view class='orderList' wx:if="{{orderData}}">
+    <navigator>
+      <view class='orderTitle'>单号：123456789
+        <label>待装车</label>
+      </view>
+      <view class='orderNamme'>陈蕾蕾
+        <image src="../images/arrowRight-icon.png" mode="widthFix"></image> 袁金红</view>
+      <text class='orderAddress'>平地--中大出港仓</text>
+      <text class='orderCommodity'>布料-3包；箱包-2条</text>
+      <text class='ordertime'>2018-01-13 10:38:15</text>
+    </navigator>
+  </view>
+  <view class='noDate' wx:else>暂无数据</view>
+</view>

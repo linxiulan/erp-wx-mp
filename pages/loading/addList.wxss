@@ -1,0 +1,159 @@
+/* pages/index/selectOrder.wxss */
+
+page {
+  background: #eee;
+}
+
+.selectBox {
+  width: 100%;
+  height: 165rpx;
+  background: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9;
+  border-bottom: 1rpx solid #eee;
+}
+
+.isSelect-active {
+  display: none;
+}
+
+.selectBox .item {
+  margin: 35rpx;
+  padding: 15rpx;
+  background: #f5f5f5;
+}
+
+.selectBox .item image {
+  width: 30rpx;
+}
+
+.selectBox .item .close {
+  padding-right: 20rpx;
+  margin-right: 20rpx;
+  border-right: 1rpx solid #ddd;
+}
+
+.selectBox .item input {
+  float: left;
+  width: 550rpx;
+  font-size: 26rpx;
+  color: #333;
+  height: 60rpx;
+  background: #f5f5f5;
+}
+
+.list {
+  margin-top: 30rpx; padding-bottom: 185rpx;
+}
+
+.list image {
+  display: block;
+  width: 40rpx;
+}
+
+.touch-item {
+  background: #eee;
+  margin-bottom: 30rpx;
+  padding-left: 120rpx;
+  position: relative;
+}
+
+.touch-item .OrdersNum {
+  color: #555;
+  font-size: 26rpx;
+  height: 100rpx;
+  line-height: 100rpx;
+  border-bottom: 1rpx solid #ddd;
+  margin-bottom: 45rpx;
+}
+
+.touch-item .OrdersNum .state {
+  float: right;
+  margin-right: 30rpx;
+}
+
+.touch-item .name .lastName, .touch-item .name .nextName {
+  float: left;
+  font-size: 30rpx;
+  color: #333;
+}
+
+.touch-item .name .img {
+  float: left;
+  width: 30rpx;
+  margin: 12rpx 20rpx;
+}
+
+.touch-item .address {
+  margin-top: 30rpx;
+  color: #333;
+  font-size: 28rpx;
+}
+
+.touch-item .information view {
+  float: left;
+  color: #333;
+  line-height: 50rpx;
+  font-size: 28rpx;
+}
+
+.touch-item .time {
+  color: #999;
+  font-size: 26rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+}
+
+.select_img {
+  text-align: center;
+  position: absolute;
+  width: 120rpx;
+   height: 100%;
+   top: 0;
+   left: 0;
+}
+
+.select_img image {
+  position: relative;
+  top: 50%;
+  left: 0%;
+  height: 40rpx;
+  width: 40rpx;
+  margin-top: -20rpx;
+  margin-left: 40rpx;
+}
+
+.touch-item .left {
+  padding-left: 20rpx;
+  box-sizing: border-box;
+  width: 630rpx;
+  background: #fff;
+  padding-bottom: 10rpx;
+}
+
+.touch-item .clearfix {
+  position: relative;
+}
+
+.bottomBtn {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 45rpx 0;
+  height: 95rpx;
+  width: 100%;
+  background: #fafafa;
+}
+
+.bottomBtn button {
+  display: block;
+  background: #69d47c;
+  color: #fff;
+  width: 500rpx;
+  margin: 0 atto;
+  height: 95rpx;
+  line-height: 95rpx;
+  text-align: center;
+}

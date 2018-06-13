@@ -1,0 +1,43 @@
+<view class='list' wx:if="{{listData.length>0}}">
+  <view class="touch-item" wx:for="{{listData}}" wx:for-index="index">
+    <navigator url='../order/detail?tradeID={{item.tradeId}}'>
+      <view class='clearfix'>
+        <view class='left'>
+          <view class='OrdersNum clearfix'>
+            单号：{{item.tradeId}}
+            <view class='state'>
+              {{item.status=='COLLECTED'?'待装车':item.status=='ONLOAD'?'已装车':item.status=='DELIVERY'?item.notify?'已通知':'已送达':item.status=='COMPLETED'?'已提货':item.status=='CANCEL'?'已取消':''}}
+            </view>
+          </view>
+          <view class='name clearfix'>
+            <view class='lastName'>{{item.sender}}</view>
+            <image class='img' mode='widthFix' src='../images/arrowRight-icon.png'></image>
+            <view class='nextName'>{{item.receiver}}</view>
+          </view>
+          <view class='address'>
+            {{item.from.name}} -- {{item.to.name}}
+          </view>
+          <view class='information clearfix'>
+            <view wx:for='{{item.items}}' wx:item="item">
+              {{item.name}}-{{item.count}}{{item.unit}} ;
+            </view>
+          </view>
+          <view class='time'>
+            {{item.gmtCreate}}
+          </view>
+
+        </view>
+      </view>
+    </navigator>
+  </view>
+  <!--上拉加载更多 Start-->
+  <view class="downLoad" wx:if="{{loadingText}}">
+    <view class="downLoad-bg"></view>
+    <text>{{loadingText}}</text>
+  </view>
+
+  <!--上拉加载更多 End-->
+</view>
+<view class='no-data' wx:elif="{{listData!==''}}">
+  暂无数据
+</view>

@@ -1,0 +1,59 @@
+/**index.wxss**/
+.mainTop{
+  position: relative;
+}
+.mainTop image{
+  display: block;width: 100%;height: auto;
+}
+.banner-search{
+  width: 590rpx; height: 66rpx; position: absolute; top: 30rpx; left: 50%; margin-left: -315rpx; padding: 0 20rpx; background: #fff; border-radius: 4rpx;
+}
+.banner-search image{
+  display: block; width: 28rpx; margin-top: 19rpx;
+}
+.searchBtn{
+  width: 500rpx; height: 100%; float: left; padding-left: 48rpx; font-size: 24rpx; line-height: 66rpx; color: #999; position: relative
+}
+.searchBtn image{
+  position: absolute; top: 0; left: 0;
+}
+.scanningBtn{
+  display: block; width: 28rpx; height: 100%; float: right;
+}
+.mainNav{
+  padding: 0 30rpx;
+}
+.mainNav navigator{
+  display: block; width: 33.3%; padding: 40rpx 0; color: #555; text-align: center; float: left; font-size: 26rpx;
+}
+.mainNav image{
+  display: block; width: 80rpx; height: 80rpx;margin: 0 auto 30rpx auto;
+}
+.mainNav label{
+  padding-right: 28rpx;
+}
+.mainList{
+  border-top:30rpx solid #eee;
+}
+.mainList .list{
+  height: 40rpx; border-bottom: 1rpx solid #ddd; padding: 30rpx;font-size: 26rpx;
+}
+.listLeft{
+  float: left; position: relative; padding-left: 60rpx; line-height: 40rpx; color: #333;
+}
+.listLeft image{
+  display: block; width: 32rpx; height: 32rpx; position: absolute; top: 50%; left: 0; margin-top: -16rpx;
+}
+.listRight{
+  float: right;position: relative; padding-right: 30rpx;line-height: 40rpx;
+  color: #999; height: 40rpx;
+}
+.listRight image{
+  display: block; width: 12rpx; height: 20rpx; position: absolute; top: 50%; right: 0; margin-top: -10rpx;
+}
+.userBtn{
+  position: fixed; bottom: 30rpx; left: 30rpx;
+}
+.userBtn image{
+  display: block; width: 60rpx;
+}

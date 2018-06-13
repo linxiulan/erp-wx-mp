@@ -1,0 +1,53 @@
+<!--pages/editInfo/receiver.wxml-->
+<!--收货人搜索 Start-->
+<view class='receiverSearch' wx:if="{{currentModule=='search'}}">
+  <view class='receiverSearch-top'>
+    <view class='receiverSearch-input-bg'>
+      <view class='receiverSearch-input'>
+        <image src="../images/search-icon.png" mode="widthFix"></image>
+        <input type='text' value='{{searchMobile}}' bindinput="bindKeySearchMobile" placeholder-class="placeholder-c999" type='text' placeholder="请输入收货人手机号"></input>
+      </view>
+      <button bindtap='savaMobile' class='searchBtn'>完成</button>
+    </view>
+  </view>
+  <view class='receiverSearch-main'>
+    <view wx:if="{{searchData.length>0}}">
+      <view class='receiverSearch-list' wx:for="{{searchData}}"  wx:for-item="item" wx:for-index="index" bindtap="selectedUser" data-index="{{index}}">
+        <image src="../images/portrait-icon-28-32.png" mode="widthFix"></image>
+        {{item.name}} {{item.mobile}}
+      </view>
+    </view>
+    <view class='receiverSearch-noData' wx:elif="{{searchData!==''}}">
+      <view>没有相匹配的客户数据</view>
+      <view class='c-999'>点击“完成”手动填写客户详细信息</view>
+    </view>
+  </view>
+</view>
+<!--收货人搜索 Start-->
+
+<!--收货人完善信息 Start-->
+<view class='completeMaterial' wx:if="{{currentModule=='completeMaterial'}}">
+  <view class='completeMaterial-form'>
+    <view class='completeMaterial-list'>
+      <label>姓名</label>
+      <input type='text' placeholder-class="placeholder-c999" type='text' placeholder="请输入收货人" value="{{name}}" bindinput="bindKeyName"></input>
+    </view>
+    <view class='completeMaterial-list'>
+      <label>手机</label>
+      <input type='text' placeholder-class="placeholder-c999" placeholder="请输入手机号码" value="{{mobile}}" bindinput="bindKeyMobile"></input>
+    </view>
+    <view class='completeMaterial-list' bindtap="selectStation">
+      <label>收货网点</label>
+      <view class='completeMaterial-text' wx:if="{{stationName}}">{{stationName}}</view>
+      <view class='completeMaterial-prompt' wx:else>请选择收货网点</view>
+    </view>
+    <view class='completeMaterial-list'>
+      <label>收货地址</label>
+      <textarea type='text' style="{{address=='请输入收货地址'?'color:#999':''}}" value='{{address}}' bindfocus="textareaFocus" bindinput="textareaKey" bindblur="textareaBlur" />
+    </view>
+  </view>
+  <view class="bottom">
+    <button bindtap="savaBtn">保存</button>
+  </view>
+</view>
+<!--收货人完善信息 Start-->

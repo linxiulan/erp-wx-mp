@@ -1,0 +1,162 @@
+/* pages/index/list.wxss */
+page{
+  background: #eee;
+}
+.top{
+  padding: 0 30rpx;
+  background: #fff;
+}
+.top .box{
+  position: relative;
+  height: 250rpx; 
+}
+.top .line-short{
+  z-index: 2;
+  position: absolute;
+  left: 0;
+  width: 25%;
+  top:80rpx;
+  margin-top:-4rpx;
+  height: 8rpx;
+  border-radius: 5px 0px 0px 5px;
+  background: #49c999;
+}
+.top .line{
+  z-index: 1;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top:80rpx;
+  margin-top:-4rpx;
+  height: 8rpx;
+  border-radius: 5px;
+  background: #cccccc;
+}
+.top .car{
+  height: 120rpx;
+  position: absolute;
+  left: 25%;
+  font-size: 28rpx;
+  width: 120rpx;
+  margin-left: -60rpx;
+  top:80rpx;
+  z-index: 3;
+  margin-top: -15rpx;
+  text-align: center;
+}
+.top .point{
+  background: #49c999;
+  height: 30rpx;
+  margin-bottom: 20rpx;
+  border-radius: 100%;
+  display: inline-block;
+  width: 30rpx;
+
+}
+
+
+.top .order{
+  height: 120rpx;
+  position: absolute;
+  left: 75%;
+  font-size: 28rpx;
+  width: 120rpx;
+  margin-left: -60rpx;
+  top:80rpx;
+  z-index: 3;
+  color: #999;
+  margin-top: -15rpx;
+  text-align: center;
+}
+.top .order .point{
+  background: #ccc;
+  height: 30rpx;
+  margin-bottom: 20rpx;
+  border-radius: 100%;
+  display: inline-block;
+  width: 30rpx;
+
+}
+
+
+.select-car{
+  padding-bottom: 270rpx;
+}
+.select-car .title{
+  color: #555555;
+  padding: 40rpx 30rpx 30rpx 30rpx;
+  background: #eeeeee;
+  font-size: 26rpx;
+}
+.select-car .select{
+
+  padding: 0rpx 30rpx 40rpx;
+  background: #eeeeee;
+}
+.select-car button{
+  background: #80dbff;
+  width: 510rpx;
+  color: #fff;
+  font-size: 28rpx;
+}
+.car-item{
+   padding-left:100rpx; 
+   position: relative;
+   border-bottom: 1rpx solid #eee;
+   height: 110rpx;
+   line-height: 110rpx;
+   font-size: 26rpx;
+   color: #555555;
+   background: #fff;
+  }
+.car-item image.car-icon{
+  display: block;
+  width: 40rpx;
+  position: absolute; 
+  top: 50%;
+  margin-top: -20rpx; 
+  left: 30rpx;
+}
+.car-item image.select{
+  display: block;
+  width: 30rpx;
+  position: absolute; 
+  top: 50%;
+  background: none;
+  margin-top: -10rpx; 
+  right: 0rpx;
+  height: 20rpx;
+}
+
+.bottom{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 185rpx;
+  width: 100%;
+  background: #fafafa;
+}
+.bottom .box{
+  padding: 40rpx ;
+}
+
+
+.bottom .box .left{
+  float: left;
+  height: 90rpx;
+  line-height: 90rpx;
+  font-size: 28rpx;
+}
+
+.bottom .box .right{
+  float:right;
+}
+.bottom .box .right button{
+  width: 300rpx;
+  height: 90rpx;
+  line-height: 90rpx;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  background: #69d47c;
+}

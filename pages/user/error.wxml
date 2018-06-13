@@ -1,0 +1,21 @@
+<!--pages/user/error.wxml-->
+<view wx:if="{{errorType==1}}">
+<image class='logo' src="../images/logo.png" mode="widthFix" ></image>
+<text class='title'>您的账号还未加入火山智能物流</text>
+<text>如需加入，请联系公司负责人</text>
+<button style='margin-top:60rpx;' type='primary' class='openBtn' bindtap="scanCode">扫码加入</button>
+</view>
+<view wx:if="{{errorType==2}}">
+<image class='errorSite' src="../images/errorSite-icon.png" mode="widthFix"></image>
+<text class='title'>暂未设置归属站点</text>
+<text>请联系负责人设置归属站点之后再使用小程序</text>
+</view>
+<view wx:if="{{errorType==3}}">
+<image class='errorSite' src="../images/errorSite-icon.png" mode="widthFix"></image>
+<text class='title'>抱歉，没有授权将无法使用</text>
+
+<button style='margin-bottom:30rpx' type='primary' open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo"  class='openBtn'>自动开启授权</button>
+
+<button type='primary' class='openBtn' bindtap="setAuthorized">手动开启授权</button>
+
+</view>

@@ -1,0 +1,32 @@
+{
+  "pages": [
+    
+    "pages/index/index",
+    "pages/index/list",
+    "pages/order/editOrder",
+    "pages/order/detail",
+    "pages/order/search",
+    "pages/order/list",
+    "pages/user/index",
+    "pages/user/error",
+    "pages/user/bindAccount",
+    "pages/editInfo/receiver",
+    "pages/editInfo/sender",
+    "pages/editInfo/station",
+    "pages/editInfo/cost",
+    "pages/qrcode/handler",
+    "pages/loading/carList",
+    "pages/loading/orderList",
+    "pages/loading/addList",
+    "pages/discharge/carList",
+    "pages/canvas/signature",
+    "pages/blueTooth/list",
+    "pages/logs/logs"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#000",
+    "navigationBarTitleText": "火山智慧物流",
+    "navigationBarTextStyle": "#fff"
+  }
+}

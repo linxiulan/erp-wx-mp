@@ -1,0 +1,9 @@
+<!--pages/user/index.wxml-->
+<image class='profilePicture' src="{{companyIcon}}" mode="widthFix"></image>
+<view class='companyName'>{{companyName}}</view>
+<view class='other'>
+<image src="{{avatarUrl}}" mode="widthFix"></image>
+  <view class='userName'>{{nickName}}</view>
+  <view class='stationName'>所属网点：{{stationName}}</view>
+</view>
+<button type='primary' class='openBtn' bindtap="replayLogin">重新登录</button>

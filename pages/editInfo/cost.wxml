@@ -1,0 +1,23 @@
+<!--pages/editInfo/cost.wxml-->
+<view class='editCost'>
+  <view class='main'>
+    <view class='costInfo-list' style='border-botto:0;'>
+      <text>运费</text>
+      <input type='digit' bindinput='bindKeyFreightCharge' value='{{freightCharge}}' ></input>
+      <label>元</label>
+    </view>
+    <view class='title'>填写相关费用</view>
+    <view class='costInfo-list' wx:for="{{priceData}}" wx:index="index" wx:item="item">
+      <text>{{item.name}}</text>
+      <input type='digit' data-index="{{index}}" bindinput='bindKeyOtherPrices' value='{{otherPrices[index].amount||0}}' ></input>
+      <label>元</label>
+    </view>
+  </view>
+  <view class="bottom">
+    <button bindtap="savaBtn" disabled='{{isSavaing}}'>{{isSavaing?'保存中':'保存'}}</button>
+  </view>
+</view>
+
+<modal hidden="{{modal.hidden}}" title="{{modal.title}}" confirm-text="{{modal.rightBtn}}" cancel-text="{{modal.leftBtn}}" bindcancel="modalCancel" bindconfirm="modalConfirm">
+    {{modal.content}}
+</modal>

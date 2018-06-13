@@ -1,0 +1,11 @@
+<!--pages/editInfo/station.wxml-->
+<view class='selectStation'>
+  <view class='selectStation-title'>
+    选择本物流公司的网点
+  </view>
+  <view class='selectStation-list'>
+    <label wx:for="{{stations}}" wx:item="item" class="{{item.stationId==stationId?'current':''}}" data-id="{{item.stationId}}" data-name="{{item.name}}" bindtap="selectedStation">
+      {{item.name}}
+    </label>
+  </view>
+</view>
