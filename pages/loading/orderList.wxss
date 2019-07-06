@@ -112,6 +112,9 @@ page{
 .select-car .operating .left button{
   background: none; color: #fff;font-size: 28rpx;height: 100rpx;line-height: 100rpx;
 }
+.list{
+  width: 100%; overflow: hidden;
+}
 .touch-item{
   background: #fff;
   padding: 40rpx 30rpx;

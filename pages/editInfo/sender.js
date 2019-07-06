@@ -93,7 +93,7 @@ Page({
     var _this = this,
       _mobile = this.data.mobile,
       _name = this.data.name,
-      _address = this.data.address,
+      _address = this.data.address == '请输入收货地址' ? '' : this.data.address,
       _stationId = this.data.stationId,
       _monthly = this.data.monthly,
       nameReg = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/,
@@ -210,10 +210,5 @@ Page({
 
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
+  
 })

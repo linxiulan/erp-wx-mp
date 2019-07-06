@@ -128,3 +128,10 @@ page{
   display: block; border:1px solid #ddd; padding: 0 20rpx; font-size: 26rpx;
   color: #555; height: 60rpx; border-radius: 8rpx;
 }
+.costInfo-textarea text{
+  position:absolute;top:0rpx;left:0rpx;font-size:26rpx;color:#555;
+line-height:50rpx;text-align:left;
+}
+textarea{
+    position: relative;height: 100rpx; font-size: 26rpx; color: #333; line-height: 50rpx; width: 100%;box-sizing: border-box; border:1rpx solid #ddd
+}

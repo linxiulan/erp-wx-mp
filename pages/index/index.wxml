@@ -43,7 +43,7 @@
         <image src="../images/indicator-right-icon.png" ></image>
       </view>
     </navigator>
-    <navigator url="../index/list?type=2" class='list clearfix'>
+    <!--<navigator url="../index/list?type=2" class='list clearfix'>
       <view class='listLeft'>
         <image src="../images/notice-icon.png" mode="widthFix"></image>
         已卸货待通知
@@ -52,7 +52,7 @@
         {{unNotifyCount>0?unNotifyCount:''}}
         <image src="../images/indicator-right-icon.png" mode="widthFix"></image>
       </view>
-    </navigator>
+    </navigator>-->
     <navigator url="../index/list?type=3" class='list clearfix'>
       <view class='listLeft'>
         <image src="../images/trailer-icon.png" mode="widthFix"></image>

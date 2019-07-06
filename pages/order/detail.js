@@ -9,8 +9,11 @@ Page({
     tradeID: '',
     orderData: '',
     payType: '',
+    payReceivable: 0,
     monthly: true,
     statisticalFees: 0,
+    Fee: 0,
+    receivableRemark:'',
     noticeRemark: '',
     signature: '',
     modal: {
@@ -22,9 +25,14 @@ Page({
       type: 1
     }
   },
-  bindKeyRemark: function (e) {
+  bindKeyRemark: function(e) {
     this.setData({
       noticeRemark: e.detail.value
+    })
+  },
+  bindKeyReceivableRemark: function (e) {
+    this.setData({
+      receivableRemark: e.detail.value
     })
   },
   dialMobile(e) {
@@ -45,6 +53,25 @@ Page({
     _num += Number(_freightCharge);
     this.setData({
       statisticalFees: _num
+    })
+  },
+  countFee() {
+    let _num = 0,
+      _data = this.data.orderData,
+      _prices = _data.prices || "",
+      _freightCharge = _data.freightCharge || 0,
+      _payReceivable = this.data.payReceivable || 0,
+      _payType = _data.payType;
+    _num += Number(_payReceivable);
+    if (_payType == 'BY_RECEIVER') {
+      for (let i = 0; i < _prices.length; i++) {
+        let _amount = _prices[i].amount;
+        _num += Number(_amount);
+      }
+      _num += Number(_freightCharge);
+    }
+    this.setData({
+      Fee: _num
     })
   },
   getPriceData() {
@@ -84,6 +111,7 @@ Page({
             orderData: _data
           });
           _this.statisticalFees();
+          _this.countFee();
         } else {
           _this.setData({
             orderData: []
@@ -98,26 +126,26 @@ Page({
 
   //打印订单
   printOrderBtn() {
-    let _this=this,
-    _data=_this.data,
-    _printData={
-      tradeId: _data.orderData.tradeId,
-      orderStatus: _data.orderData.orderStatus,
-      companyName: wx.getStorageSync('companyName') || "",
-      telephone: '020-12365984',
-      senderInfoStationName: _data.orderData.senderInfo.station.name,
-      receiverInfoStationName: _data.orderData.receiverInfo.station.name,
-      receiverInfoName: _data.orderData.receiverInfo.name,
-      receiverInfoMobile: _data.orderData.receiverInfo.mobile,
-      items: _data.orderData.items,
-      total: _data.statisticalFees,
-      isMonthly: _data.orderData.payType == 'BY_SENDER' ? _data.orderData.senderInfo.monthly : _data.orderData.receiverInfo.monthly,
-      payType: _data.orderData.payType,
-      receivable: _data.orderData.receivable,
-      note: _data.orderData.remark||'无',
-      createUser: _data.orderData.traces[0].createUser,
-      gmtCreate: _data.orderData.traces[0].gmtCreate,
-    };
+    let _this = this,
+      _data = _this.data,
+      _printData = {
+        tradeId: _data.orderData.tradeId,
+        orderStatus: _data.orderData.orderStatus,
+        companyName: wx.getStorageSync('companyName') || "",
+        telephone: wx.getStorageSync('companyPhone') || "",
+        senderInfoStationName: _data.orderData.senderInfo.station.name,
+        receiverInfoStationName: _data.orderData.receiverInfo.station.name,
+        receiverInfoName: _data.orderData.receiverInfo.name,
+        receiverInfoMobile: _data.orderData.receiverInfo.mobile,
+        items: _data.orderData.items,
+        total: _data.statisticalFees,
+        isMonthly: _data.orderData.payType == 'BY_SENDER' ? _data.orderData.senderInfo.monthly : _data.orderData.receiverInfo.monthly,
+        payType: _data.orderData.payType,
+        receivable: _data.orderData.receivable,
+        note: _data.orderData.remark || '无',
+        createUser: _data.orderData.traces[0].createUser,
+        gmtCreate: _data.orderData.traces[0].gmtCreate,
+      };
     wx.setStorageSync('printData', _printData)
     wx.navigateTo({
       url: '../blueTooth/list'
@@ -185,10 +213,21 @@ Page({
   pickUpBtn() {
     let $orderData = this.data.orderData,
       _payType = $orderData.payType,
-      _title = '';
+      _title = '',
+      _payReceivable = this.data.payReceivable,
+      _receivable = $orderData.receivable;
+    if (_payReceivable > _receivable) {
+      app.toast('收取货款金额不能大于代收货款金额');
+      return false;
+    }
+    if (_payReceivable == 0 || _payReceivable == _receivable){
+      this.setData({
+        receivableRemark:''
+      })
+    }
     if (_payType == 'BY_SENDER') {
       let _name = $orderData.receiverInfo.name,
-        _money = $orderData.receivable;
+        _money = _payReceivable;
       _title = '亲，请确认是否已收取收货人-' + _name + '货款' + _money + '元'
     }
     if (_payType == 'BY_RECEIVER') {
@@ -197,22 +236,24 @@ Page({
         app.toast('请输入运费')
         return false;
       }
-      let _statisticalFees = this.data.statisticalFees,
-        _name = $orderData.receiverInfo.name,
-        _receivable = $orderData.receivable || 0,
-        _money = (_statisticalFees + _receivable).toFixed(2);
-      _title = '亲，请确认是否已收取收货人-' + _name + '货款加其他费用' + _money + '元'
+      let _Fee = this.data.Fee,
+        _name = $orderData.receiverInfo.name;
+      _title = '亲，请确认是否已收取收货人-' + _name + '货款加其他费用' + _Fee + '元'
     }
-    this.setData({
-      modal: {
-        hidden: false,
-        title: _title,
-        leftBtn: '取消',
-        rightBtn: '确认',
-        content: '',
-        type: 3
-      }
-    })
+    if ($orderData.receiverInfo.monthly){
+      this.photoUpload()
+    }else{
+      this.setData({
+        modal: {
+          hidden: false,
+          title: _title,
+          leftBtn: '取消',
+          rightBtn: '确认',
+          content: '',
+          type: 3
+        }
+      })
+    }
   },
   pickUp() {
     wx.showLoading({
@@ -220,22 +261,29 @@ Page({
     });
     let _data = this.data,
       $orderData = _data.orderData,
-      _otherPrices = utils.copyObj($orderData.prices)||"",
-      _id = _data.tradeID;
+      _otherPrices = utils.copyObj($orderData.prices) || "",
+      _id = _data.tradeID,
+      _payType = $orderData.payType,
+      _params = {
+        "tradeId": _id,
+        "status": "COMPLETED",
+        "payType": _payType,
+        "replaceUnPayPrice": false,
+        "freightCharge": $orderData.freightCharge * 100,
+        "payReceivable": _data.payReceivable * 100,
+        "sign": _data.signature || '',
+        "receivableRemark": _data.receivableRemark
+      };
     for (let i = 0; i < _otherPrices.length; i++) {
       let _item = _otherPrices[i];
       _otherPrices[i].amount = _item.amount * 100;
     }
+    if (_payType == 'BY_RECEIVER') {
+      _params.replaceUnPayPrice = true;
+      _params.replaceOrderPrices = _otherPrices || [];
+    }
     app.$put('/api/order/status', {
-      params: {
-        "tradeId": _id,
-        "status": "COMPLETED",
-        "payType": $orderData.payType,
-        "replaceUnPayPrice": false,
-        //"replaceOrderPrices": _otherPrices || [],
-        "freightCharge": $orderData.freightCharge*100,
-        "sign": _data.signature || ''
-      },
+      params: _params,
       success: (res) => {
         wx.hideLoading();
         if (res.code == 'SUCCESS') {
@@ -275,8 +323,8 @@ Page({
       'modal.hidden': true
     })
   },
-  uploadFile(_tempFilePath){
-    let _this=this;
+  uploadFile(_tempFilePath) {
+    let _this = this;
     wx.uploadFile({
       url: app.hostPath + '/api/file/temp/upload', //仅为示例，非真实的接口地址
       filePath: _tempFilePath[0],
@@ -287,7 +335,7 @@ Page({
       formData: {
         'user': 'test'
       },
-      success: function (res) {
+      success: function(res) {
         let _data = JSON.parse(res.data);
         if (_data.code == 'SUCCESS') {
           /*let _fileKey = _data.data.fileKey;
@@ -305,13 +353,13 @@ Page({
     })
   },
   //拍照上传
-  photoUpload(){
-    let _this=this;
+  photoUpload() {
+    let _this = this;
     wx.chooseImage({
       count: 1, // 默认9
       sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-      success: function (res) {
+      success: function(res) {
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         //var tempFilePaths = res.tempFilePaths
         //console.log(res.tempFilePaths)
@@ -353,10 +401,16 @@ Page({
     let _data = this.data.orderData,
       $otherPrices = _data.prices,
       $freightCharge = _data.freightCharge,
-      editCostData = {
-        otherPrices: $otherPrices,
-        freightCharge: $freightCharge
-      };
+      receivable = this.data.payReceivable,
+      payType = _data.payType,
+      orderStatus = _data.orderStatus;
+    let editCostData = {
+      otherPrices: $otherPrices,
+      freightCharge: $freightCharge,
+      receivable: receivable,
+      payType: payType,
+      orderStatus: orderStatus
+    };
     wx.setStorageSync('editCostData', editCostData)
     wx.navigateTo({
       url: '../editInfo/cost'
@@ -369,9 +423,11 @@ Page({
       let otherPrices = _costInfo.otherPrices;
       this.setData({
         'orderData.prices': _costInfo.otherPrices,
-        'orderData.freightCharge': _costInfo.freightCharge
+        'orderData.freightCharge': _costInfo.freightCharge,
+        'payReceivable': _costInfo.receivable
       })
       this.statisticalFees();
+      this.countFee();
     }
     if (_signature) {
       this.setData({
@@ -383,60 +439,58 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
     let _tradeID = options.tradeID || "";
     this.setData({
       tradeID: _tradeID
     })
-    this.getOrderInfo(_tradeID)
+    wx.showLoading({
+      title: '加载中',
+    })
     this.getPriceData();
+    this.getOrderInfo(_tradeID)
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
+  onReady: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
+  onHide: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
+  onUnload: function() {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
+  onReachBottom: function() {
 
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
+ 
 })

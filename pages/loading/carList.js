@@ -46,24 +46,55 @@ Page({
     })
   },
   scanningBtn() {
+    let _this=this;
     wx.scanCode({
       success: (res) => {
-        let _carId = utils.GetQueryString(res.result, 'carId') || '';
-        this.addCar(res._carId)
-        wx.showToast({
-          title: '扫描成功',
-          icon: 'success',
-          duration: 2000
-        })
+        let _url = res.result,
+          action = utils.GetQueryString(_url, 'action') || '',
+          carId = utils.GetQueryString(_url, 'carId') || '';
+        if (action == 'car' && carId != '') {
+          _this.quickSelectionCar(carId)
+          /*wx.showLoading({
+            title: '扫码成功,正在添加车辆',
+          });*/
+        } else {
+          app.toast('扫码失败')
+        }
       }
     })
   },
-  addCar(name) {
+  //快速选择
+  quickSelectionCar(carId){
+    let _this=this,
+      _data = _this.data.carList||[],
+      _id='',
+      _name='';
+    for (let i = 0; i < _data.length;i++){
+      let _item = _data[i];
+      if (_item.carId == carId){
+        _id = _item.carId;
+        _name = _item.plateNumber;
+      }
+    }
+    if (_id==''){
+      app.toast('没有该车辆');
+      return false;
+    }
+    this.setData({
+      curCar: _id,
+      curCarName: _name || '--'
+    })
+    wx.navigateTo({
+      url: '../loading/orderList?carId=' + _id + '&plateNumber=' + _name,
+    })
+  },
+  /*addCar(name) {
     app.$post('/api/admin/car', {
       params:{
         plateNumber: name
       },
       success: (res) => {
+        wx.hideLoading();
         if (res.code == 'SUCCESS') {
           this.getCarList();
         } else {
@@ -71,10 +102,11 @@ Page({
         }
       },
       fail: (err) => {
+        wx.hideLoading();
         app.toast(err.msg)
       }
     })
-  },
+  },*/
   /**
    * 生命周期函数--监听页面加载
    */
@@ -124,10 +156,5 @@ Page({
 
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
+ 
 })

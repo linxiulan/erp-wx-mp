@@ -9,19 +9,22 @@ Page({
     priceData: wx.getStorageSync('priceData') || "",
     otherPrices: [],
     freightCharge: 0,
-    modal: {
-      hidden: true,
-      title: '',
-      leftBtn: '取消',
-      rightBtn: '确定',
-      content: ''
-    }
+    receivable:0,
+    payType:'',
+    orderStatus:''
   },
   bindKeyFreightCharge(e) {
     let _value = e.detail.value;
     _value = utils.formatMoney(_value);
     this.setData({
       freightCharge: _value || 0
+    })
+  },
+  bindKeyreceivable(e) {
+    let _value = e.detail.value;
+    _value = utils.formatMoney(_value);
+    this.setData({
+      receivable: _value || 0
     })
   },
   bindKeyOtherPrices(e) {
@@ -69,7 +72,10 @@ Page({
     }
     this.setData({
       otherPrices: arr,
-      freightCharge: _data.freightCharge
+      freightCharge: _data.freightCharge,
+      receivable: _data.receivable,
+      payType: _data.payType||'',
+      orderStatus: _data.orderStatus||''
     })
   },
   //请求费用相关数据
@@ -107,43 +113,10 @@ Page({
       _this.getPriceData()
     }
   },
-  modalConfirm() {
-    let _type = this.data.modal.type;
-    this.editSava()
-    this.setData({
-      'modal.hidden': true
-    })
-  },
-  modalCancel() {
-    this.setData({
-      'modal.hidden': true
-    })
-  },
-  editCost() {
-    if (!this.data.isMonthly) {
-      this.setData({
-        modal: {
-          hidden: false,
-          title: '亲，请确认是否已收取发货人的运费',
-          leftBtn: '取消',
-          rightBtn: '确定',
-          content: '',
-        }
-      })
-      return false;
-    }
-    this.editSava()
-  },
-  editSava() {
-
-  },
   savaBtn() {
-    if (this.data.isEdit) {
-      this.editCost()
-      return false;
-    }
     let otherPrices = this.data.otherPrices,
       freightCharge = this.data.freightCharge,
+      receivable = this.data.receivable,
       _arr = [];
     for (let i = 0; i < otherPrices.length; i++) {
       let item = otherPrices[i];
@@ -158,10 +131,10 @@ Page({
     let _data = {
       costInfo: {
         otherPrices: _arr,
-        freightCharge: freightCharge
+        freightCharge: freightCharge,
+        receivable: receivable
       }
     }
-
     this.returnData(_data)
     wx.navigateBack()
   },
@@ -216,10 +189,5 @@ Page({
 
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
+  
 })

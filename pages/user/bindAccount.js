@@ -21,9 +21,9 @@ Page({
    */
   onLoad: function (options) {
     if (options){
-      let _action = options.action || '',
-        _companyId = options.companyId||'',
-        _token = options.token||'';
+      let _action = options.action || 'bindCompany',
+        _companyId = options.companyId||'1',
+        _token = options.token ||'1f56e540176940958bcb89ff3d537aa8';
       if (_action == 'bindCompany') {
         this.setData({
           currentModules: 'company',
@@ -80,12 +80,7 @@ Page({
 
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  },
+  
 
   /**
    * 切换到完善资料模块

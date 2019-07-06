@@ -10,7 +10,28 @@
   <view style='height:160rpx; width:100%;'></view>
   <view class='searchList' wx-if="searchData.length>0">
     <navigator wx:for="{{searchData}}" wx:for-item="item" url='../order/detail?tradeID={{item.tradeId}}' >
-      订单：{{item.tradeId}}
+      <view class='OrdersNum clearfix'>
+            单号：{{item.tradeId}}
+            <view class='state'>
+              {{item.status=='COLLECTED'?'待装车':item.status=='ONLOAD'?'已装车':item.status=='DELIVERY'?item.notify?'已通知':'已送达':item.status=='COMPLETED'?'已提货':item.status=='CANCEL'?'已取消':''}}
+            </view>
+          </view>
+          <view class='name clearfix'>
+            <view class='lastName'>{{item.sender}}</view>
+            <image class='img' mode='widthFix' src='../images/arrowRight-icon.png'></image>
+            <view class='nextName'>{{item.receiver}}</view>
+          </view>
+          <view class='address'>
+            {{item.from.name}} -- {{item.to.name}}
+          </view>
+          <view class='information clearfix'>
+            <view wx:for='{{item.items}}' wx:item="item">
+              {{item.name}}-{{item.count}}{{item.unit}} ;
+            </view>
+          </view>
+          <view class='time'>
+            {{item.gmtCreate}}
+          </view>
     </navigator>
   </view>
 </view>

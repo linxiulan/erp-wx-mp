@@ -19,7 +19,7 @@
       <view class='icon'>收</view>
       <image src="../images/mobile-icon.png" data-num="{{orderData.receiverInfo.mobile}}" bindtap='dialMobile' mode="widthFix"></image>
       <view class='contactInfo-text'>
-        <view class='address'>{{orderData.receiverInfo.station.name}}-{{orderData.receiverInfo.address}}</view>
+        <view class='address'>{{orderData.receiverInfo.station.name}}{{orderData.receiverInfo.address?'-'+orderData.receiverInfo.address:''}}</view>
         <view>{{orderData.receiverInfo.name}} {{orderData.receiverInfo.mobile}}</view>
       </view>
     </view>
@@ -46,7 +46,7 @@
         <view class='costInfo-list'>
           <text>运费</text>{{orderData.freightCharge}}元
         </view>
-        <view class='costInfo-list' wx:for="{{orderData.prices}}" wx:for-index="index" wx:for-item="item">
+        <view class='costInfo-list' wx:for="{{orderData.prices}}" wx:for-index="index" wx:for-item="item" wx:key="key">
           <text>{{item.name}}</text>{{item.amount}}元
         </view>
         <view style='border-bottom: 1rpx solid #ddd; width:100%;'></view>
@@ -60,18 +60,31 @@
         <text>{{orderData.receiverInfo.monthly?'月结':'现结'}}</text>
       </view>
       <view class='costInfoList-main' style='padding-bottom:10rpx'>
+        <view class='costInfo-list'>
+          <text>代收货款</text>{{orderData.receivable}}元
+        </view>
+        <view class='costInfo-list' wx-if="{{orderData.orderStatus=='DELIVERY'}}">
+          <text>收取货款金额</text>{{payReceivable}}元
+        </view>
         <view class='costInfo-list' wx-if="{{orderData.payType=='BY_RECEIVER'}}">
           <text>运费</text>{{orderData.freightCharge}}元
         </view>
-        <view class='costInfo-list' wx-if="{{orderData.payType=='BY_RECEIVER'}}" wx:for="{{orderData.prices}}" wx:for-index="index" wx:for-item="item">
+        <view class='costInfo-list' wx-if="{{orderData.payType=='BY_RECEIVER'}}" wx:for="{{orderData.prices}}" wx:for-index="index" wx:for-item="item" wx:key="key">
           <text>{{item.name}}</text>{{item.amount}}元
         </view>
-        <view class='costInfo-bottom' style='border-top: 1rpx solid #ddd;border-bottom: 1rpx solid #ddd; margin-bottom:40rpx;padding-left:0;padding-right:0;' wx-if="{{orderData.payType=='BY_RECEIVER' && orderData.orderStatus=='DELIVERY'}}">
+        <view class='costInfo-bottom' style='border-top: 1rpx solid #ddd;padding-left:0;padding-right:0;' wx-if="{{orderData.orderStatus=='DELIVERY'}}">
           <button bindtap='editCostInfo'>编辑费用</button>
-          <view class='costInfo-total'>合计：{{statisticalFees}}元</view>
+          <view class='costInfo-total'>应收总额：{{Fee}}元</view>
         </view>
-        <view class='costInfo-list'>
-          <text>代收货款</text>{{orderData.receivable}}元
+      </view>
+    </view>
+    <view class="costInfo-sender" wx-if="{{payReceivable!=0 && payReceivable!=orderData.receivable && orderData.orderStatus=='DELIVERY'}}">
+      <view class='costInfo-title'>收取部分货款备注
+      </view>
+      <view class='costInfoList-main' style='padding:30rpx'>
+       <view class='costInfo-list' style='padding:0rpx;'>
+          <text>备注</text>
+          <input value="{{receivableRemark}}" bindinput='bindKeyReceivableRemark' placeholder-class="c-999" type='text' placeholder="可填写"></input>
         </view>
       </view>
     </view>
@@ -102,7 +115,7 @@
       <button bindtap='pickUpBtn' wx-if="{{orderData.orderStatus=='DELIVERY'}}" class='btnBlue'>提货</button>
       <button bindtap='noticeUserBtn' wx-if="{{orderData.orderStatus=='DELIVERY'}}" class='btnGreen'>通知</button>
       <button wx-if="{{orderData.orderStatus=='COLLECTED'||orderData.orderStatus=='COMPLETED'||orderData.orderStatus=='ONLOAD'}}" class='btnBlue' bindtap='printOrderBtn'>打印订单</button>
-      <button wx-if="{{orderData.orderStatus=='COLLECTED' || orderData.receiverInfo.monthly}}" class='btnGreen' bindtap='cancelOrderBtn'>取消订单</button>
+      <button wx-if="{{orderData.orderStatus=='COLLECTED'}}" class='btnGreen' bindtap='cancelOrderBtn'>取消订单</button>
     </view>
   </view>
 </view>

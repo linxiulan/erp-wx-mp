@@ -23,7 +23,7 @@
   </view>
 
   <view class='list'>
-    <view class="touch-item {{item.isTouchMove ? 'touch-move-active' : ''}}" data-index="{{index}}" bindtouchstart="touchstart" bindtouchmove="touchmove" wx:for="{{orderList}}" wx:itme="item" wx:key="">
+    <view class="touch-item {{item.isTouchMove ? 'touch-move-active' : ''}}" data-index="{{index}}" bindtouchstart="touchstart" bindtouchmove="touchmove" wx:for="{{orderList}}" wx:itme="item" wx:key="key">
       <view class='OrdersNum'>单号：{{item.tradeId}}</view>
       <view class='name clearfix'>
         <view class='lastName'>{{item.receiver}}</view>

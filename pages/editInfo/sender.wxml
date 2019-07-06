@@ -6,7 +6,7 @@
     <view class='receiverSearch-input-bg'>
       <view class='receiverSearch-input'>
         <image src="../images/search-icon.png" mode="widthFix"></image>
-        <input type='text' value='{{searchMobile}}' bindinput="bindKeySearchMobile" placeholder-class="placeholder-c999" type='text' placeholder="请输入发货人手机号"></input>
+        <input type='text' value='{{searchMobile}}' bindinput="bindKeySearchMobile" maxlength="15"  placeholder-class="placeholder-c999" type='text' placeholder="请输入发货人手机号"></input>
       </view>
       <button bindtap='savaMobile' class='searchBtn'>完成</button>
     </view>

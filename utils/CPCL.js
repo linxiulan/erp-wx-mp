@@ -36,43 +36,53 @@ const _convertArrayBuffer = (cmd) => {
   }
   return uint16Array;
 };
-const test2 = (printData) => {
+const test2 = (printData, nature) => {
   let _items = printData.items,
     _materials = '',
     _orderStatus = printData.orderStatus,
     _payType = printData.payType == 'BY_RECEIVER' ? '提付' : '现付',
     _isMonthly = printData.isMonthly ? '月结' : '现结',
-    _status=''
+    _status = '',
+    _receiverInfo = '--';
   for (let i = 0; i < _items.length; i++) {
     let _item = _items[i];
     _materials += _item.name + ' ' + _item.count + '' + _item.unit + '; '
   }
-  if (_orderStatus == "COMPLETED" || printData.payType =='BY_SENDER'){
-    _status=_isMonthly + "、" + _payType 
-  }else{
+  if (_orderStatus == "COMPLETED" || printData.payType == 'BY_SENDER') {
+    _status = _isMonthly + "、" + _payType
+  } else {
     _status = _payType
   }
-
-  let cmd = "! 0 200 200 700 1\r\n";
+  if (printData.receiverInfoName != '--' && printData.receiverInfoMobile != '--') {
+    _receiverInfo = printData.receiverInfoName + " " + printData.receiverInfoMobile;
+  }
+  let cmd = "! 0 200 200 390 1\r\n";
   cmd += "T 2 0 55 8 " + printData.companyName + "\r\n";
   cmd += "T 1 0 55 58 电话:" + printData.telephone + "\r\n";
   cmd += "T 1 2 55 120 " + printData.senderInfoStationName + " -- " + printData.receiverInfoStationName + "\r\n";
-  cmd += "T 1 0 55 185 收货人：" + printData.receiverInfoName + " " + printData.receiverInfoMobile + "\r\n";
+  cmd += "T 1 0 55 185 收货人：" + _receiverInfo + "\r\n";
   cmd += "T 1 0 55 250 物品：" + _materials + "\r\n";
-  cmd += "T 1 0 55 290 " + printData.total + "元(" + _status+ ")   代收货款：" + printData.receivable + "元\r\n";
+  cmd += "T 1 0 55 290 " + printData.total + "元(" + _status + ")   代收货款：" + printData.receivable + "元\r\n";
   cmd += "T 1 0 55 330 备注:" + printData.note + "\r\n";
-  cmd += "T 1 0 55 390 未保价货物则按双方约定运价的2.5倍进行赔偿,\r\n";
-  cmd += "T 1 0 55 430 其余未尽事宜按原机打执行\r\n";
-  cmd += "B QR 55 490 M 2 U 4\r\n";
-  cmd += "MA,http://mherp.com/wx/mp/?action=order&tradeId=" + printData.tradeId + "\r\n";
-  cmd += "ENDQR \r\n"
-  cmd += "T 1 0 200 500 单号：" + printData.tradeId + "\r\n";
-  cmd += "T 1 0 200 540 下单员：" + printData.createUser + "\r\n";
-  cmd += "T 1 0 200 580 日期：" + printData.gmtCreate + "\r\n";
-  cmd += "GAP-SENSE\r\n"
-  cmd += "FORM\r\n";
+  cmd += "GAP-SENSE\r\n";
   cmd += "PRINT\r\n";
-  return cmd;
+  let cmd2 = "! 0 200 200 230 1\r\n";
+  cmd2 += "T 1 0 55 0 未保价货物则按双方约定运价的2.5倍进行赔偿,\r\n";
+  cmd2 += "T 1 0 55 40 其余未尽事宜按原机打执行\r\n";
+  cmd2 += "B QR 55 100 M 2 U 4\r\n";
+  cmd2 += "MA,http://mherp.com/wx/mp/?action=order&tradeId=" + printData.tradeId + "\r\n";
+  cmd2 += "ENDQR \r\n"
+  cmd2 += "T 1 0 200 110 单号：" + printData.tradeId + "\r\n";
+  cmd2 += "T 1 0 200 150 下单员：" + printData.createUser + "\r\n";
+  cmd2 += "T 1 0 200 190 日期：" + printData.gmtCreate + "\r\n";
+  cmd2 += "GAP-SENSE\r\n"
+  cmd2 += "FORM\r\n";
+  cmd2 += "PRINT\r\n";
+  if (nature == 'Below') {
+    return cmd2
+  } else {
+    return cmd;
+  }
 };
 
 module.exports = {

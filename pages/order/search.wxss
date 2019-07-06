@@ -20,14 +20,60 @@ page{
    display: block; height: 90rpx;font-size: 26rpx;  color: #999;
 }
 .searchList{
-  background: #fff; padding:0rpx 30rpx 0rpx 30rpx;
+  background: #fff; padding:0rpx; line-height: 48rpx;
 }
 .searchList navigator{
   background: #fff; display: block; line-height: 100rpx;
-  color: #555; border-bottom: 1rpx solid #ddd; font-size: 28rpx;
+  color: #555; border-bottom: 30rpx solid #f5f5f5; font-size: 28rpx;
+  padding: 0 30rpx 10rpx 30rpx; 
 }
 .searchList navigator:last-child{
   border:0;
+}
+.searchList .OrdersNum {
+  color: #555;
+  font-size: 26rpx;
+  height: 100rpx;
+  line-height: 100rpx;
+  border-bottom: 1rpx solid #ddd;
+  margin-bottom: 20rpx;
+}
+.searchList .name .lastName, .searchList .name .nextName {
+  float: left;
+  font-size: 30rpx;
+  line-height: 48rpx;
+  color: #333;
+}
+
+.searchList .name .img {
+  float: left;
+  width: 30rpx;
+  margin: 12rpx 20rpx;
+}
+
+.searchList .address {
+  margin-top: 10rpx;
+  color: #333;
+  font-size: 28rpx;
+  line-height: 48rpx;
+}
+
+.searchList .information view {
+  float: left;
+  color: #333;
+  line-height: 48rpx;
+  font-size: 28rpx;
+}
+
+.searchList .time {
+  color: #999;
+  font-size: 26rpx;
+  height: 50rpx;
+  line-height: 48rpx;
+}
+
+.searchList .OrdersNum .state {
+  float: right;
 }
 .noData{
   padding-top: 240rpx;

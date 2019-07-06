@@ -38,6 +38,7 @@
 
   <!--上拉加载更多 End-->
 </view>
+
 <view class='no-data' wx:elif="{{listData!==''}}">
   暂无数据
 </view>

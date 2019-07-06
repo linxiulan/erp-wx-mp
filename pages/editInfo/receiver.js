@@ -144,7 +144,7 @@ Page({
     var _this = this,
       _mobile = this.data.mobile,
       _name = this.data.name,
-      _address = this.data.address,
+      _address = this.data.address == '请输入收货地址' ? '' : this.data.address,
       _stationId = this.data.stationId,
       _stationName = this.data.stationName,
       _monthly=this.data.monthly,
@@ -290,10 +290,5 @@ Page({
 
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
+  
 })

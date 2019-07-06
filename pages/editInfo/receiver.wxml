@@ -30,7 +30,7 @@
   <view class='completeMaterial-form'>
     <view class='completeMaterial-list'>
       <label>姓名</label>
-      <input type='text' placeholder-class="placeholder-c999" type='text' placeholder="请输入收货人" value="{{name}}" bindinput="bindKeyName"></input>
+      <input type='text' placeholder-class="placeholder-c999" type='text' placeholder="请输入收货人" value="{{name}}" maxlength="15" bindinput="bindKeyName"></input>
     </view>
     <view class='completeMaterial-list'>
       <label>手机</label>
@@ -43,7 +43,7 @@
     </view>
     <view class='completeMaterial-list'>
       <label>收货地址</label>
-      <textarea type='text' style="{{address=='请输入收货地址'?'color:#999':''}}" value='{{address}}' bindfocus="textareaFocus" bindinput="textareaKey" bindblur="textareaBlur" />
+      <textarea type='text' style="{{address=='请输入收货地址'?'color:#999':''}}" value='{{address}}' bindfocus="textareaFocus" maxlength="55" bindinput="textareaKey" bindblur="textareaBlur" />
     </view>
   </view>
   <view class="bottom">

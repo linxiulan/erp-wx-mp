@@ -19,7 +19,9 @@ Page({
     deviceName: '',//仅用于存储连接的设备名
     deviceId: '',
     serviceId: '',
-    characteristicId: ''
+    characteristicId: '',
+    instructionAbove: '',
+    instructionBelow: ''
   },
   //
   startConnect: function () {
@@ -145,7 +147,7 @@ Page({
           }, 3000)
         } else {
           wx.hideToast();
-          if (discovering) {//正在搜附近蓝牙
+          if (discovering || !_this.data.autoSearch) {//正在搜附近蓝牙或手动关闭了蓝牙
             _this.setData({
               status: 'normal'
             })
@@ -402,21 +404,13 @@ Page({
     }
   },
   arrayBufferToHexString(buffer) {
-    let bufferType = Object.prototype.toString.call(buffer)
-    if (buffer != '[object ArrayBuffer]') {
-      return
-    }
-    let dataView = new DataView(buffer)
-
-    var hexStr = '';
-    for (var i = 0; i < dataView.byteLength; i++) {
-      var str = dataView.getUint8(i);
-      var hex = (str & 0xff).toString(16);
-      hex = (hex.length === 1) ? '0' + hex : hex;
-      hexStr += hex;
-    }
-
-    return hexStr.toUpperCase();
+    var hexArr = Array.prototype.map.call(
+      new Uint8Array(buffer),
+      function (bit) {
+        return ('00' + bit.toString(16)).slice(-2)
+      }
+    )
+    return hexArr.join('');
   },
   //接受notify消息
   onNotifyChange() {
@@ -447,10 +441,22 @@ Page({
   writeBLECharacteristicValue(deviceId, serviceId, characteristicId) {
     let _this = this,
       printData = wx.getStorageSync('printData') || "";
+    _this.setData({
+      deviceId: deviceId,
+      serviceId: serviceId,
+      characteristicId: characteristicId,
+      instructionAbove: '',
+      instructionBelow: ''
+    })
     wx.showLoading({
       title: '准备打印'
     });
-    let _value = CPCL.test2(printData);
+    this.getInstructionText(printData,'Above');
+    this.getInstructionText(printData,'Below');
+  },
+  getInstructionText(printData,nature) {
+    let _this = this,
+    _value = CPCL.test2(printData, nature);
     app.$post('/api/utils/encode', {
       params: {
         "charset": 'gb2312',
@@ -458,21 +464,17 @@ Page({
       },
       success: (res) => {
         if (res.code == 'SUCCESS') {
-          let _buffer = (new Int8Array(res.data)).buffer;
-          wx.writeBLECharacteristicValue({
-            deviceId: deviceId,
-            serviceId: serviceId,
-            characteristicId: characteristicId,
-            value: _buffer,
-            success: function (res) {
-              setTimeout(function () {
-                _this.recordUsedDevice(deviceId, serviceId, characteristicId)
-                _this.closeBLEConnection(deviceId);
-                wx.hideLoading();
-                app.toast("正在为您打印，请查看打印机");
-              }, 2000);
-            }
-          })
+          let _data = res.data;
+          if (nature =='Below'){
+            _this.setData({
+              instructionBelow: _data
+            })
+          }else{
+            _this.setData({
+              instructionAbove: _data
+            })
+          }
+          _this.sendInstructions()
         } else {
           wx.hideLoading();
           app.toast(res.msg)
@@ -483,6 +485,43 @@ Page({
         _this.errorHandling(err);
       }
     })
+  },
+  //发送指令
+  sendInstructions() {
+    let _this = this,
+      _data = _this.data,
+      _instructionAbove = _data.instructionAbove,
+      _instructionBelow = _data.instructionBelow;
+    if (_instructionAbove != '' && _instructionBelow != '') {
+      let _deviceId = _data.deviceId,
+        _serviceId = _data.serviceId,
+        _characteristicId = _data.characteristicId,
+        _Above = (new Int8Array(_instructionAbove)).buffer,
+        _Below = (new Int8Array(_instructionBelow)).buffer;
+      console.log(_deviceId, _serviceId, _characteristicId, _Above, _Below);
+      wx.writeBLECharacteristicValue({
+        deviceId: _deviceId,
+        serviceId: _serviceId,
+        characteristicId: _characteristicId,
+        value: _Above,
+        success: function (res) {
+        }
+      })
+      wx.writeBLECharacteristicValue({
+        deviceId: _deviceId,
+        serviceId: _serviceId,
+        characteristicId: _characteristicId,
+        value: _Below,
+        success: function (res) {
+          setTimeout(function () {
+            _this.recordUsedDevice(_deviceId, _serviceId, _characteristicId)
+            _this.closeBLEConnection(_deviceId);
+            wx.hideLoading();
+            app.toast("正在为您打印，请查看打印机");
+          }, 1000);
+        }
+      })
+    }
   },
   //断开与设备的连接
   closeBLEConnection(deviceId) {
@@ -648,10 +687,5 @@ Page({
 
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
+ 
 })

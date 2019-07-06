@@ -3,5 +3,9 @@
 <image class='bindSuccessIcon' src='../images/bindwarning-icon.png'></image>
   <text class='bindSuccessText'>{{failureTitle}}</text>
   <text class='mt-40'>{{failureText}}</text>
+  <view class='openBtn'>
+  <button  type='primary'  bindtap="scanCode">重新扫码</button>
+  <button style='float:right'  type='primary'  bindtap="backHome">回到首页</button>
+  </view>
 </view>
 <!--二维码失效模块 end -->

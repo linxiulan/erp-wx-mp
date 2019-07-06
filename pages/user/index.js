@@ -27,7 +27,8 @@ Page({
     return _name
   },
   getStationData(stationId) {
-    let stationData = this.data.stationData||""
+    let stationData = this.data.stationData||"",
+    _this=this;
     if (stationData){
       this.setData({
         stationName: this.getStationName(stationId)
@@ -36,19 +37,20 @@ Page({
     app.$get('/api/station/list', {
       success: (res) => {
         if (res.code == 'SUCCESS') {
-          this.setData({
+          _this.setData({
             stationData: res.data
           })
-          this.setData({
-            stationName: this.getStationName(stationId)
+          _this.setData({
+            stationName: _this.getStationName(stationId)
           })
           wx.setStorageSync('stationData', res.data);
         } else {
-          wx.showToast(res.msg)
+          app.toast(res.msg)
         }
       },
       fail: (err) => {
-        wx.showToast(err.msg);
+        app.toast('请求失败，重新请求')
+        _this.getStationData(stationId);
       }
     })
   },
@@ -60,11 +62,19 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let _serInfo=wx.getStorageSync('wx_userInfo');
+    let _serInfo=wx.getStorageSync('wx_userInfo'),
+      _companyIcon=wx.getStorageSync('companyIcon'),
+      _stationData=wx.getStorageSync('stationData'),
+      _companyName=wx.getStorageSync('companyName'),
+      _stationId=wx.getStorageSync('stationId');
     if (_serInfo){
       this.setData({
         nickName: _serInfo.nickName,
-        avatarUrl: _serInfo.avatarUrl
+        avatarUrl: _serInfo.avatarUrl,
+        companyIcon: _companyIcon,
+        stationData: _stationData,
+        companyName: _companyName,
+        stationId: _stationId
       })
     }
     this.getStationData(this.data.stationId);
@@ -112,10 +122,5 @@ Page({
   
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
   
-  }
 })

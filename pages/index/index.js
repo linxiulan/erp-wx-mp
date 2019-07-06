@@ -51,7 +51,6 @@ Page({
     let _this=this;
     wx.scanCode({
       success: (res) => {
-        console.log(res.result);
         let orderID = utils.GetQueryString(res.result,'tradeId')||'';
         _this.searchOrder(orderID);
       }
@@ -61,7 +60,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let _tradeID = options.tradeID,
+    let _tradeID = options.tradeId,
       _carId = options.carId;
     if (_tradeID){
       this.searchOrder(_tradeID)

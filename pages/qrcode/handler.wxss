@@ -37,3 +37,9 @@ text{
 .bindSuccessPrompt{
   width: 90%; padding: 40rpx 0; margin: 0 auto; border-top: 1rpx dashed #ddd; font-size: 24rpx; text-align: center; color: #999;
 }
+.openBtn{ width: 80%; margin:0px auto;}
+.openBtn button{
+  margin-top: 60px;
+  width: 48%;
+  float: left
+}

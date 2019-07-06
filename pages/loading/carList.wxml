@@ -18,15 +18,15 @@
 <view class='select-car'>
   <view class='title'>选择车辆</view>
   <view class='select'>
-    <button bindtap='scanningBtn'>扫码添加</button>
-  </view> 
+    <button bindtap='scanningBtn'>扫码选择</button>
+  </view>
   <view class='list'>
-    <view class='car-item'  wx:for='{{carList}}' wx:item="item" data-id="{{item.carId}}" data-name="{{item.plateNumber}}" bindtap='selectedCar'>
-    <image class='car-icon' src='../images/car-icon.png' mode='widthFix'></image>
+    <view class='car-item' wx:for='{{carList}}' wx:item="item" data-id="{{item.carId}}" data-name="{{item.plateNumber}}" bindtap='selectedCar'>
+      <image class='car-icon' src='../images/car-icon.png' mode='widthFix'></image>
       {{item.plateNumber}}
-    <image class='select' src='../images/tick-icon.png' mode='widthFix' wx:if="{{item.carId==curCar}}"></image>
+      <image class='select' src='../images/tick-icon.png' mode='widthFix' wx:if="{{item.carId==curCar}}"></image>
     </view>
-  </view> 
+  </view>
 </view>
 <view class='bottom'>
   <view class='box'>

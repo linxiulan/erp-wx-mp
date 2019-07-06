@@ -15,37 +15,35 @@ Page({
       name: "",
       mobile: "",
       address: "",
-      stationId: '',
-      stationName: ''
+      stationId: "",
+      stationName: ""
     },
     senderInfo: {
       name: "",
       mobile: "",
       address: "",
-      stationId: ''
+      stationId: ""
     },
     cargoes: [{
-      "name": "",
-      "count": 0,
-      "unit": ""
+      name: "",
+      count: "",
+      unit: "条"
     }],
-    "receivableInfo": {  //应收发货人费用
-      "receivable": 0
+    receivableInfo: { //应收发货人费用
+      receivable: 0
     },
     otherPrices: [],
     otherPricesText: '',
     payType: "", //寄付:BY_SENDER  到付:BY_RECEIVER
     statisticalFees: 0,
-    RECEIVERFreight:0,
+    Fee: 0,
+    RECEIVERFreight: 0,
     freightCharge: 0,
     remark: "",
     editCargoesName: ['布条', '箱包'],
-    editCargoesType: ['包', '条'],
+    editCargoesType: ['条', '包'],
     editCargoes: {
-      index: '',
-      name: '布条',
-      count: 0.00,
-      unit: '包'
+      index: ''
     },
     isShowEditCargoes: false,
     isShowStatisticalPopUp: false,
@@ -57,31 +55,35 @@ Page({
   },
   statisticalFees() {
     let _num = 0,
-      _otherPrices = this.data.otherPrices;
+      _otherPrices = this.data.otherPrices,
+      _freightCharge = this.data.freightCharge,
+      _receivable = this.data.receivableInfo.receivable;
     for (let i = 0; i < _otherPrices.length; i++) {
-      let _amount=_otherPrices[i].amount;
+      let _amount = _otherPrices[i].amount;
       _num += Number(_amount);
     }
-    if (this.data.payType == "BY_SENDER") {
-      let _freightCharge = this.data.freightCharge
-      _num += Number(_freightCharge);
-    }
+    _num += Number(_freightCharge);
+    _num += Number(_receivable);
     this.setData({
       statisticalFees: utils.powAmount(_num, 2)
     })
   },
-  editReceiverInfo() {
-    let $receiverInfo = this.data.receiverInfo,
-      _parameter = $receiverInfo.name + '|' + $receiverInfo.mobile + '|' + $receiverInfo.address + '|' + $receiverInfo.stationId + '|' + $receiverInfo.stationName;
-    wx.navigateTo({
-      url: '../editInfo/receiver?parameter=' + _parameter
-    })
-  },
-  editSenderInfo() {
-    let $senderInfo = this.data.senderInfo,
-      _parameter = $senderInfo.name + '|' + $senderInfo.mobile + '|' + $senderInfo.address + '|' + $senderInfo.stationId;
-    wx.navigateTo({
-      url: '../editInfo/sender?parameter=' + _parameter
+  countFee() {
+    let _num = 0,
+      _otherPrices = this.data.otherPrices,
+      _freightCharge = this.data.freightCharge,
+      _receivable = this.data.receivableInfo.receivable,
+      _payType = this.data.payType;
+    for (let i = 0; i < _otherPrices.length; i++) {
+      let _amount = _otherPrices[i].amount;
+      _num += Number(_amount);
+    }
+    _num += Number(_freightCharge);
+    if (_payType == 'BY_RECEIVER') {
+      _num += Number(_receivable);
+    }
+    this.setData({
+      Fee: utils.powAmount(_num, 2)
     })
   },
   changeData(data) {
@@ -116,16 +118,21 @@ Page({
         _text = '';
       this.setData({
         otherPrices: _costInfo.otherPrices,
-        freightCharge: _costInfo.freightCharge
+        freightCharge: _costInfo.freightCharge,
+        receivableInfo: {
+          receivable: _costInfo.receivable
+        }
       })
       for (let i = 0; i < otherPrices.length; i++) {
-        let item = otherPrices[i];
-        _text += this.getPriceName(item.pcId) + item.amount + '元；'
+        let item = otherPrices[i],
+          _unit = i == otherPrices.length - 1 ? '元' : '元；';
+        _text += this.getPriceName(item.pcId) + item.amount + _unit;
       }
       this.setData({
         otherPricesText: _text
       })
       this.statisticalFees();
+      this.countFee();
     }
   },
   getStationName(_id) {
@@ -141,6 +148,7 @@ Page({
     return _name
   },
   getStationData() {
+    let _this = this;
     app.$get('/api/station/list', {
       success: (res) => {
         if (res.code == 'SUCCESS') {
@@ -152,11 +160,23 @@ Page({
             stationName: this.getStationName(this.data.stationId)
           })
         } else {
-          wx.showToast(res.msg)
+          wx.showToast({
+            icon: 'none',
+            title: res.msg,
+          })
+        }
+        if (_this.data.stationData !== '' && _this.data.priceData !== '') {
+          wx.hideLoading()
         }
       },
       fail: (err) => {
-        wx.showToast(err.msg)
+        if (_this.data.stationData !== '' && _this.data.priceData !== '') {
+          wx.hideLoading()
+        }
+        wx.showToast({
+          icon: 'none',
+          title: err.msg,
+        })
       }
     })
   },
@@ -173,28 +193,61 @@ Page({
     return _name
   },
   getPriceData() {
+    let _this = this;
     app.$get('/api/price/list', {
       success: (res) => {
         if (res.code == 'SUCCESS') {
           this.setData({
             priceData: res.data
           })
-          wx.setStorageSync('priceData', res.data)
+          wx.setStorageSync('priceData', res.data);
+          _this.setOtherPrices();
         } else {
-          wx.showToast(res.msg)
+          wx.showToast({
+            icon: 'none',
+            title: res.msg,
+          })
+        }
+        if (_this.data.stationData !== '' && _this.data.priceData !== '') {
+          wx.hideLoading()
         }
       },
       fail: (err) => {
-        wx.showToast(err.msg)
+        if (_this.data.stationData !== '' && _this.data.priceData !== '') {
+          wx.hideLoading()
+        }
+        wx.showToast({
+          icon: 'none',
+          title: err.msg,
+        })
       }
     })
   },
+  setOtherPrices() {
+    let _this = this,
+      priceData = _this.data.priceData || "",
+      otherPrices = _this.data.otherPrices || "",
+      arr = [];
+    for (let i = 0; i < priceData.length; i++) {
+      let item = priceData[i],
+        _amount = 0;
+      arr.push({
+        pcId: item.pcId,
+        amount: _amount
+      })
+    }
+    _this.setData({
+      'otherPrices': arr
+    })
+  },
   editCostInfo() {
-    let $otherPrices = this.data.otherPrices,
-      $freightCharge = this.data.freightCharge,
+    let _otherPrices = this.data.otherPrices,
+      _freightCharge = this.data.freightCharge,
+      _receivable = this.data.receivableInfo.receivable,
       editCostData = {
-        otherPrices: $otherPrices,
-        freightCharge: $freightCharge
+        otherPrices: _otherPrices,
+        freightCharge: _freightCharge,
+        receivable: _receivable
       }
     wx.setStorageSync('editCostData', editCostData)
     wx.navigateTo({
@@ -208,12 +261,140 @@ Page({
       'receivableInfo.receivable': _value
     })
   },
-  bindKeyFreight(e) {
-    let _value = e.detail.value;
-    _value = utils.formatMoney(_value)
-    this.setData({
-      'RECEIVERFreight': _value
+  //搜索用户信息
+  searchInfo(_value, _type, urlType) {
+    let _this = this,
+      _url = '';
+    if (urlType == 'mobile') {
+      _url = '/api/customer/' + _value;
+    } else {
+      _url = '/api/customer/name/' + _value;
+    }
+    console.log(_url)
+    app.$get(_url, {
+      success: (res) => {
+        if (res.code == 'SUCCESS') {
+          if (res.data != null) {
+            if (_type == 'receiverInfo') {
+              _this.setData({
+                receiverInfo: {
+                  name: res.data.name || "",
+                  mobile: res.data.mobile || "",
+                  address: res.data.address || "",
+                  stationId: res.data.station ? res.data.station.stationId : "",
+                  stationName: res.data.station ? res.data.station.name : "",
+                },
+                monthly: res.data.monthly
+              })
+            } else {
+              _this.setData({
+                senderInfo: {
+                  name: res.data.name || "",
+                  mobile: res.data.mobile || "",
+                  address: res.data.address || "",
+                  stationId: res.data.station ? res.data.station.stationId : "",
+                  stationName: res.data.station ? res.data.station.name : "",
+                }
+              })
+            }
+          }
+        }
+      },
+      fail: (err) => {
+        console.log(err)
+      }
     })
+  },
+  //收件人输入手机号
+  bindKeyReceiverInfoMobile: function(e) {
+    let _value = e.detail.value;
+    this.setData({
+      'receiverInfo.mobile': _value,
+      monthly: false
+    })
+    if (_value.length >= 11) {
+      this.searchInfo(_value, 'receiverInfo', 'mobile')
+    }
+  },
+  //收件人输入姓名
+  bindKeyReceiverInfoName: function(e) {
+    let _value = e.detail.value;
+    this.setData({
+      'receiverInfo.name': _value
+    })
+    if (_value.length >= 2) {
+      this.searchInfo(_value, 'receiverInfo', 'name')
+    }
+  },
+  //收件人选择站点
+  bindPickerChange(e) {
+    let _this = this,
+      _key = e.detail.value,
+      _stationData = _this.data.stationData,
+      _stationId = _stationData[_key].stationId,
+      _stationName = _stationData[_key].name;
+    _this.setData({
+      'receiverInfo.stationId': _stationId,
+      'receiverInfo.stationName': _stationName
+    });
+  },
+  //收件人输入地址
+  bindKeyReceiverInfoAddress: function(e) {
+    this.setData({
+      'receiverInfo.address': e.detail.value
+    })
+  },
+  //寄件人输入手机号
+  bindKeySenderInfoMobile: function(e) {
+    let _value = e.detail.value;
+    this.setData({
+      'senderInfo.mobile': _value
+    })
+    if (_value.length >= 11) {
+      this.searchInfo(_value, 'senderInfo', 'mobile')
+    }
+  },
+  //寄件人输入姓名
+  bindKeySenderInfoName: function(e) {
+    let _value = e.detail.value;
+    this.setData({
+      'senderInfo.name': _value
+    })
+    if (_value.length >= 2) {
+      this.searchInfo(_value, 'senderInfo', 'name')
+    }
+  },
+  //运费
+  bindKeyFreightCharge(e) {
+    let _value = e.detail.value;
+    _value = utils.formatMoney(_value);
+    this.setData({
+      freightCharge: _value || 0
+    })
+    this.statisticalFees();
+    this.countFee();
+  },
+  //代收货款
+  bindKeyreceivable(e) {
+    let _value = e.detail.value;
+    _value = utils.formatMoney(_value);
+    this.setData({
+      'receivableInfo.receivable': _value || 0
+    })
+    this.statisticalFees();
+    this.countFee();
+  },
+  bindKeyOtherPrices(e) {
+    let _value = e.detail.value,
+      _index = e.target.dataset.index,
+      otherPrices = this.data.otherPrices;
+    _value = utils.formatMoney(_value);
+    otherPrices[_index].amount = _value || 0;
+    this.setData({
+      otherPrices: otherPrices
+    })
+    this.statisticalFees();
+    this.countFee();
   },
   bindKeyRemark(e) {
     this.setData({
@@ -228,8 +409,8 @@ Page({
     } else {
       _cargoes.push({
         name: '',
-        count: 0,
-        unit: ''
+        count: '',
+        unit: '条'
       })
     }
     this.setData({
@@ -237,75 +418,41 @@ Page({
     })
   },
   openEditCargoes(e) {
-    let _index = e.target.dataset.index,
-      _cargoes = this.data.cargoes,
-      _item = _cargoes[_index] || "";
+    let _index = e.currentTarget.dataset.index;
     this.setData({
       editCargoes: {
         index: _index,
-        name: _item.name || '',
-        count: _item.count || 0,
-        unit: _item.unit || '包'
       },
       isShowEditCargoes: true
     })
   },
   bindKeyCount(e) {
-    this.setData({
-      'editCargoes.count': e.detail.value
-    })
-  },
-  selectCargoesName(e) {
-    let _name = e.target.dataset.name,
-      c_name = this.data.editCargoes.name || '';
-    this.setData({
-      'editCargoes.name': _name == c_name ? '' : _name
-    })
-  },
-  addEditCargoesCount() {
-    let _num = this.data.editCargoes.count;
-    _num++;
-    this.setData({
-      'editCargoes.count': _num
-    })
-  },
-  delEditCargoesCount() {
-    let _num = this.data.editCargoes.count;
-    _num--;
-    this.setData({
-      'editCargoes.count': _num > 0 ? _num : 0
-    })
-  },
-  operateStatisticalPopUp(e) {
-    let _type = e.target.dataset.type,
-      _isShow = this.data.isShowStatisticalPopUp;
-    if (_type) {
-      this.setData({
-        'editCargoes.unit': _type
-      })
+    let _value = e.detail.value,
+      _index = e.currentTarget.dataset.index,
+      cargoes = this.data.cargoes;
+    if (_value < 1) {
+      _value = '';
     }
+    cargoes[_index].count = _value;
     this.setData({
-      isShowStatisticalPopUp: _isShow ? false : true
+      cargoes: cargoes
     })
   },
-  savaCargoes() {
+  switchCargoesUnit(e) {
     let _item = this.data.editCargoes,
-      _cargoes = this.data.cargoes,
-      _index = _item.index;
-    _cargoes[_index] = {
-      name: _item.name || '',
-      count: _item.count || 0,
-      unit: _item.unit || ''
-    };
+      _index = _item.index,
+      _unit = e.target.dataset.unit,
+      cargoes = this.data.cargoes;
+    cargoes[_index].unit = _unit;
     this.setData({
-      cargoes: _cargoes
+      cargoes: cargoes,
+      isShowEditCargoes: false
     })
   },
   closeBullet() {
     this.setData({
       isShowEditCargoes: false
     })
-    this.savaCargoes()
   },
   switchPayType(e) {
     let _type = e.target.dataset.type;
@@ -313,37 +460,57 @@ Page({
       this.setData({
         payType: _type
       })
-      this.statisticalFees()
+      this.statisticalFees();
+      this.countFee();
     }
   },
-  modalCancel: function () {
+  modalCancel: function() {
     this.setData({
       "modal.isHidden": true
     });
   },
-  modalConfirm: function () {
+  modalConfirm: function() {
     this.savaInfo(this.data.modal.info);
     this.setData({
       "modal.isHidden": true
     });
   },
+  //添加客户信息
+  savaClient(_name, _mobile, _address, _stationId) {
+    app.$post('/api/customer/' + _mobile, {
+      params: {
+        name: _name,
+        stationId: _stationId,
+        address: _address
+      },
+      success: (res) => {},
+      fail: (err) => {
+        console.log(err);
+      }
+    })
+  },
   //验证提交信息
   verificationInfo() {
     let _data = this.data,
-      _otherPrices = utils.copyObj(_data.otherPrices);
-    for (let i = 0; i < _otherPrices.length; i++) {
-      let _item = _otherPrices[i];
-      _otherPrices[i].amount = _item.amount * 100;
+      otherPrices = _data.otherPrices,
+      _otherPrices = [],
+      mobileReg = /^[1][0-9]{10}$/;
+    for (let i = 0; i < otherPrices.length; i++) {
+      let _item = otherPrices[i];
+      if (_item.amount > 0) {
+        _otherPrices.push({
+          pcId: _item.pcId,
+          amount: _item.amount * 100
+        })
+      }
     }
     let _info = {
       "stationId": wx.getStorageSync('stationId'),
-      "senderInfo":
-      {
+      "senderInfo": {
         "name": _data.senderInfo.name,
         "mobile": _data.senderInfo.mobile
       },
-      "receiverInfo":
-      {
+      "receiverInfo": {
         "name": _data.receiverInfo.name,
         "mobile": _data.receiverInfo.mobile,
         "address": _data.receiverInfo.address,
@@ -358,17 +525,36 @@ Page({
       "freightCharge": _data.freightCharge * 100,
       "remark": _data.remark
     };
-    if (_data.payType == 'BY_RECEIVER' ) {
-      _info.freightCharge = _data.RECEIVERFreight*100
-    } 
-    if (_data.senderInfo.mobile == '') {
-      app.toast("请填写发货人信息");
+    //没有代收货款收货人与寄货人只需要填一个
+    if (_data.receivableInfo.receivable <= 0) {
+      if ((_data.receiverInfo.name == '' || !mobileReg.test(_data.receiverInfo.mobile)) && (_data.senderInfo.name == '' || !mobileReg.test(_data.senderInfo.mobile))) {
+        app.toast("请填写收货人信息或与寄货人信息");
+        return false;
+      }
+    } else {
+      if (!mobileReg.test(_data.receiverInfo.mobile)) {
+        app.toast("请填写收货人手机号");
+        return false;
+      }
+      if (_data.receiverInfo.name == '') {
+        app.toast("请填写收货人姓名");
+        return false;
+      }
+      if (!mobileReg.test(_data.senderInfo.mobile)) {
+        app.toast("请填写寄货人手机号");
+        return false;
+      }
+      if (_data.senderInfo.name == '') {
+        app.toast("请填写寄货人姓名");
+        return false;
+      }
+    }
+
+    if (_data.receiverInfo.stationId == '') {
+      app.toast("请选择收货网点");
       return false;
     }
-    if (_data.receiverInfo.mobile == '') {
-      app.toast("请填写收货人信息");
-      return false;
-    }
+
     let _cargoes = _data.cargoes,
       _cargoes_err = false;
     for (let i = 0; i < _cargoes.length; i++) {
@@ -386,15 +572,16 @@ Page({
       app.toast("请选择支付方式");
       return false;
     }
-    if (_data.payType == 'BY_SENDER' && _data.freightCharge <= 0) {
+
+    /*if (_data.payType == 'BY_SENDER' && _data.freightCharge <= 0) {
       app.toast("请填写运费");
       return false;
-    } 
-    if (_data.payType == 'BY_SENDER' && !_data.monthly ) {
+    }*/
+    if (_data.payType == 'BY_SENDER' && !_data.monthly && _data.Fee != 0) {
       this.setData({
         modal: {
           isHidden: false,
-          text: '亲，请确认是否已收取发货人-' + _data.senderInfo.name + '相关费用' + _data.statisticalFees + '元',
+          text: '亲，请确认是否已收取发货人' + _data.senderInfo.name + '相关费用' + _data.Fee + '元',
           info: _info
         }
       })
@@ -403,6 +590,13 @@ Page({
     }
   },
   savaInfo(_data) {
+    let _this = this;
+    if (_data.receiverInfo.name != '' && _data.receiverInfo.mobile != '') {
+      _this.savaClient(_data.receiverInfo.name, _data.receiverInfo.mobile, _data.receiverInfo.address, _data.receiverInfo.stationId);
+    }
+    if (_data.senderInfo.name != '' && _data.senderInfo.mobile != '') {
+      _this.savaClient(_data.senderInfo.name, _data.senderInfo.mobile, '', _this.data.stationId);
+    }
     wx.showLoading({
       title: '保存中,请稍等',
     });
@@ -413,7 +607,9 @@ Page({
         if (res.code == 'SUCCESS') {
           app.toast('添加成功', true);
           let _id = res.data.tradeId;
-          wx.redirectTo({ url: '../order/detail?tradeID=' + _id });
+          wx.redirectTo({
+            url: '../order/detail?tradeID=' + _id
+          });
         } else {
           app.toast(res.msg)
         }
@@ -427,10 +623,13 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
     let _stationId = wx.getStorageSync('stationId') || "";
     this.setData({
       stationId: _stationId
+    })
+    wx.showLoading({
+      title: '加载中',
     })
     this.getStationData();
     this.getPriceData();
@@ -439,49 +638,44 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
+  onReady: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
+  onHide: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
+  onUnload: function() {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
+  onReachBottom: function() {
 
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
 
-  }
 })
